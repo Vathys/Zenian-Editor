@@ -50,7 +50,7 @@ public class GlyphColumn
           {
                gl.render(g);
           }
-          drawDebug(g);
+          //drawDebug(g);
      }
      
      @SuppressWarnings("unused")
