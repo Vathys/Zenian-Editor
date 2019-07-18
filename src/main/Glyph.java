@@ -14,18 +14,21 @@ public class Glyph
      private ArrayList<ZenianLetter> c;
      private GlyphColumn gc;
      private Color fontColor;
+     private int fontSize;
      
      private int[] offset;
      
      public Glyph (GlyphColumn gc)
      {
+          this.fontSize = gc.getFontSize();
           this.x = gc.getStartX();
-          this.y = gc.getCurrentHeight() - 40;
+          this.y = gc.getCurrentHeight() - (fontSize * 8);
           
           this.gc = gc;
           
+          
           fontColor = Color.WHITE;
-          startOffset = new int[] {20, 20};
+          startOffset = new int[] {fontSize * 4, fontSize * 4};
           
           c = new ArrayList<ZenianLetter>();
      }
@@ -38,13 +41,13 @@ public class Glyph
           
           for(int i = 0; i < c.size(); i++)
           {
-               widthTracker += c.get(i).getLetterOffset()[0] * 2;
+               widthTracker += c.get(i).getLetterOffset(fontSize)[0] * 2;
                if(widthTracker > gc.cellWidth)
                {
-                    offset[0] += c.get(i).getLetterOffset()[0];
-                    gc.cellWidth += c.get(i).getLetterOffset()[0] * 2;
+                    offset[0] += c.get(i).getLetterOffset(fontSize)[0];
+                    gc.cellWidth += c.get(i).getLetterOffset(fontSize)[0] * 2;
                }
-               offset[1] += c.get(i).getLetterOffset()[1];
+               offset[1] += c.get(i).getLetterOffset(fontSize)[1];
           }
      }
      
@@ -52,7 +55,7 @@ public class Glyph
      {
           Graphics2D gi = (Graphics2D) g;
           
-          LetterRenderHandler rh = new LetterRenderHandler(fontColor);
+          LetterRenderHandler rh = new LetterRenderHandler(fontColor, fontSize);
           //drawDebug(gi, offset);
           for(int i = 0; i < c.size(); i++) {
                //eraseDebug(gi, offset);
@@ -64,10 +67,10 @@ public class Glyph
           
           GeneralPath dot = new GeneralPath();
           
-          dot.moveTo(offset[0] + 5, offset[1]);
-          dot.lineTo(offset[0], offset[1] + 5);
-          dot.lineTo(offset[0] - 5, offset[1]);
-          dot.lineTo(offset[0], offset[1] - 5);
+          dot.moveTo(offset[0] + fontSize, offset[1]);
+          dot.lineTo(offset[0], offset[1] + fontSize);
+          dot.lineTo(offset[0] - fontSize, offset[1]);
+          dot.lineTo(offset[0], offset[1] - fontSize);
           dot.closePath();
           
           gi.fill(dot);
@@ -165,10 +168,10 @@ public class Glyph
 
      public int getHeight()
      {
-          int dim = 50 + (2 * startOffset[1]);
+          int dim = (fontSize * 10) + (2 * startOffset[1]);
           for(int i = 0;i < c.size(); i++)
           {
-               dim += c.get(i).getLetterOffset()[1] * 2;
+               dim += c.get(i).getLetterOffset(fontSize)[1] * 2;
           }
           return dim;
      }
@@ -177,27 +180,27 @@ public class Glyph
      {
           this.gc = ngc;
           this.x = ngc.getStartX();
-          this.y = ngc.getCurrentHeight() - 40;
+          this.y = ngc.getCurrentHeight() - (fontSize * 8);
      }
      
      public void addLetter(ZenianLetter letter)
      {
           c.add(letter);
-          gc.updateHeight(c.get(c.size() - 1).getLetterOffset()[1] * 2);
+          gc.updateHeight(c.get(c.size() - 1).getLetterOffset(fontSize)[1] * 2);
           gc.checkHeight();
      }
      
      public ZenianLetter removeLetter(ZenianLetter letter)
      {
-          gc.updateHeight(c.get(c.lastIndexOf(letter)).getLetterOffset()[1] * -2);
-          gc.cellWidth -= c.get(c.lastIndexOf(letter)).getLetterOffset()[0] * 2;
+          gc.updateHeight(c.get(c.lastIndexOf(letter)).getLetterOffset(fontSize)[1] * -2);
+          gc.cellWidth -= c.get(c.lastIndexOf(letter)).getLetterOffset(fontSize)[0] * 2;
           return c.remove(c.lastIndexOf(letter));
      }
      
      public ZenianLetter removeLastLetter()
      {
-          gc.updateHeight(c.get(c.size() - 1).getLetterOffset()[1] * -2);
-          gc.cellWidth -= c.get(c.size() - 1).getLetterOffset()[0] * 2;
+          gc.updateHeight(c.get(c.size() - 1).getLetterOffset(fontSize)[1] * -2);
+          gc.cellWidth -= c.get(c.size() - 1).getLetterOffset(fontSize)[0] * 2;
           return c.remove(c.size() - 1);
      }
 }

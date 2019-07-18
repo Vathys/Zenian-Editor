@@ -11,24 +11,27 @@ public class GlyphColumn
      private int currentHeight;
      public int cellWidth;
      private int heightLimit;
+     private int fontSize;
      
-     public GlyphColumn(int startX, int startY, int cellWidth, int maximumHeight)
+     public GlyphColumn(int startX, int startY, int cellWidth, int fontSize, int maximumHeight)
      {
           this.startX = startX;
           this.currentHeight = startY + cellWidth;
           this.cellWidth = cellWidth;
           this.heightLimit = maximumHeight;
+          this.fontSize = fontSize;
           
           this.column = new ArrayList<Glyph>();
           column.add(new Glyph(this));
      }
      
-     public GlyphColumn(int startX, int startY, int cellWidth, int maximumHeight, Glyph startGlyph)
+     public GlyphColumn(int startX, int startY, int cellWidth, int fontSize, int maximumHeight, Glyph startGlyph)
      {
           this.startX = startX;
           this.currentHeight = startY + cellWidth;
           this.cellWidth = cellWidth;
           this.heightLimit = maximumHeight;
+          this.fontSize = fontSize;
           
           this.column = new ArrayList<Glyph>();
           startGlyph.updateGC(this);
@@ -64,7 +67,7 @@ public class GlyphColumn
           g.drawLine(startX + (cellWidth / 2), 0, startX + (cellWidth / 2), heightLimit);
           g.drawLine(cellWidth + startX, 0, cellWidth + startX, heightLimit);
           
-          g.drawLine(0, 50, cellWidth + startX, 50);
+          g.drawLine(0, fontSize * 10, cellWidth + startX, fontSize * 10);
           g.drawLine(0, totalHeight, cellWidth + startX, totalHeight);
           g.setColor(Color.GREEN);
           g.drawLine(0, currentHeight, cellWidth + startX, currentHeight);
@@ -78,6 +81,11 @@ public class GlyphColumn
      public int getCurrentHeight()
      {
           return currentHeight;
+     }
+     
+     public int getFontSize()
+     {
+          return fontSize;
      }
      
      public void updateHeight(int update)
@@ -106,7 +114,7 @@ public class GlyphColumn
      
      public void addGlyph()
      {
-          updateHeight(90);
+          updateHeight(fontSize * 18);
           column.add(new Glyph(this));
           checkHeight();
      }
@@ -114,7 +122,7 @@ public class GlyphColumn
      public void addGlyph(Glyph g)
      {
           g.updateGC(this);
-          updateHeight(90);
+          updateHeight(fontSize * 18);
           column.add(g);
           checkHeight();
      }
@@ -138,7 +146,7 @@ public class GlyphColumn
      
      public Glyph removeLastGlyph() throws ArrayIndexOutOfBoundsException
      {
-          updateHeight(-90);
+          updateHeight(fontSize * -18);
           return column.remove(column.size() - 1);
      }
      

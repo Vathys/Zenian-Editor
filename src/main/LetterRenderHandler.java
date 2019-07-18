@@ -11,14 +11,16 @@ public class LetterRenderHandler
 {
      private HashMap<Key, Object> defaultRenderHints;
      private Color fontColor;
+     private int fontSize;
      
-     public LetterRenderHandler(Color fontColor)
+     public LetterRenderHandler(Color fontColor, int fontSize)
      {
           defaultRenderHints = new HashMap<Key, Object>();
           defaultRenderHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
           defaultRenderHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
           
           this.fontColor = fontColor;
+          this.fontSize = fontSize;
      }
      
      /*
@@ -43,24 +45,26 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Right Dot
-          p.moveTo(x + xOff - 5, y);
-          p.lineTo(x + xOff, y + 5);
-          p.lineTo(x + xOff + 5, y);
-          p.lineTo(x + xOff, y - 5);
+          p.moveTo(x + xOff - fontSize, y);
+          p.lineTo(x + xOff, y + fontSize);
+          p.lineTo(x + xOff + fontSize, y);
+          p.lineTo(x + xOff, y - fontSize);
           p.closePath();
           
           gi.fill(p);
           
           //Left Dot
-          p.moveTo(x - xOff - 5, y);
-          p.lineTo(x - xOff, y + 5);
-          p.lineTo(x - xOff + 5, y);
-          p.lineTo(x - xOff, y - 5);
+          p.moveTo(x - xOff - fontSize, y);
+          p.lineTo(x - xOff, y + fontSize);
+          p.lineTo(x - xOff + fontSize, y);
+          p.lineTo(x - xOff, y - fontSize);
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 20, yOff + 5};
+          int[] letterOffset = ZenianLetter.I.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -75,42 +79,44 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Right Horizontal Line
-          p.moveTo(x + xOff - 10, y + 2.5);
-          p.lineTo(x + xOff + 10, y + 2.5);
-          p.lineTo(x + xOff + 10, y - 2.5);
-          p.lineTo(x + xOff - 10, y - 2.5);
+          p.moveTo(x + xOff - (fontSize * 2), y + (fontSize / 2));
+          p.lineTo(x + xOff + (fontSize * 2), y + (fontSize / 2));
+          p.lineTo(x + xOff + (fontSize * 2), y - (fontSize / 2));
+          p.lineTo(x + xOff - (fontSize * 2), y - (fontSize / 2));
           p.closePath();
           
           gi.fill(p);
           
           //Left Horizaontal Line
-          p.moveTo(x - xOff + 10, y + 2.5);
-          p.lineTo(x - xOff - 10, y + 2.5);
-          p.lineTo(x - xOff - 10, y - 2.5);
-          p.lineTo(x - xOff + 10, y - 2.5);
+          p.moveTo(x - xOff + (fontSize * 2), y + (fontSize / 2));
+          p.lineTo(x - xOff - (fontSize * 2), y + (fontSize / 2));
+          p.lineTo(x - xOff - (fontSize * 2), y - (fontSize / 2));
+          p.lineTo(x - xOff + (fontSize * 2), y - (fontSize / 2));
           p.closePath();
           
           gi.fill(p);
           
           //Right Dot
-          p.moveTo(x + xOff + 15, y);
-          p.lineTo(x + xOff + 20, y + 5);
-          p.lineTo(x + xOff + 25, y);
-          p.lineTo(x + xOff + 20, y - 5);
+          p.moveTo(x + xOff + (fontSize * 3), y);
+          p.lineTo(x + xOff + (fontSize * 4), y + fontSize);
+          p.lineTo(x + xOff + (fontSize * 5), y);
+          p.lineTo(x + xOff + (fontSize * 4), y - fontSize);
           p.closePath();
           
           gi.fill(p);
           
           //Left Dot
-          p.moveTo(x - xOff - 15, y);
-          p.lineTo(x - xOff - 20, y + 5);
-          p.lineTo(x - xOff - 25, y);
-          p.lineTo(x - xOff - 20, y - 5);
+          p.moveTo(x - xOff - (fontSize * 3), y);
+          p.lineTo(x - xOff - (fontSize * 4), y + fontSize);
+          p.lineTo(x - xOff - (fontSize * 5), y);
+          p.lineTo(x - xOff - (fontSize * 4), y - fontSize);
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 40, yOff + 5};
+          int[] letterOffset = ZenianLetter.Y.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -125,42 +131,44 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Right Dot
-          p.moveTo(x + xOff - 5, y - yOff + 10);
-          p.lineTo(x + xOff, y - yOff + 5);
-          p.lineTo(x + xOff + 5, y - yOff + 10);
-          p.lineTo(x + xOff, y - yOff + 15);
+          p.moveTo(x + xOff - fontSize, y - yOff + (fontSize * 2));
+          p.lineTo(x + xOff, y - yOff + fontSize);
+          p.lineTo(x + xOff + fontSize, y - yOff + (fontSize * 2));
+          p.lineTo(x + xOff, y - yOff + (fontSize * 3));
           p.closePath();
           
           gi.fill(p);
           
           //Left Dot
-          p.moveTo(x - xOff + 5, y - yOff + 10);
-          p.lineTo(x - xOff, y - yOff + 5);
-          p.lineTo(x - xOff - 5, y - yOff + 10);
-          p.lineTo(x - xOff, y - yOff + 15);
+          p.moveTo(x - xOff + fontSize, y - yOff + (fontSize * 2));
+          p.lineTo(x - xOff, y - yOff + fontSize);
+          p.lineTo(x - xOff - fontSize, y - yOff + (fontSize * 2));
+          p.lineTo(x - xOff, y - yOff + (fontSize * 3));
           p.closePath();
           
           gi.fill(p);
           
           //Right Vertical Line
-          p.moveTo(x + xOff - 2.5, y - yOff + 20);
-          p.lineTo(x + xOff + 2.5, y - yOff + 20);
-          p.lineTo(x + xOff + 2.5, y + yOff - 5);
-          p.lineTo(x + xOff - 2.5, y + yOff - 5);
+          p.moveTo(x + xOff - (fontSize / 2), y - yOff + (fontSize * 4));
+          p.lineTo(x + xOff + (fontSize / 2), y - yOff + (fontSize * 4));
+          p.lineTo(x + xOff + (fontSize / 2), y + yOff - fontSize);
+          p.lineTo(x + xOff - (fontSize / 2), y + yOff - fontSize);
           p.closePath();
           
           gi.fill(p);
           
           //Left Vertical Line
-          p.moveTo(x - xOff + 2.5, y - yOff + 20);
-          p.lineTo(x - xOff - 2.5, y - yOff + 20);
-          p.lineTo(x - xOff - 2.5, y + yOff - 5);
-          p.lineTo(x - xOff + 2.5, y + yOff - 5);
+          p.moveTo(x - xOff + (fontSize / 2), y - yOff + (fontSize * 4));
+          p.lineTo(x - xOff - (fontSize / 2), y - yOff + (fontSize * 4));
+          p.lineTo(x - xOff - (fontSize / 2), y + yOff - fontSize);
+          p.lineTo(x - xOff + (fontSize / 2), y + yOff - fontSize);
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 20, yOff + 5};
+          int[] letterOffset = ZenianLetter.E.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -175,33 +183,35 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Right Dot
-          p.moveTo(x + xOff - 5, y - yOff);
-          p.lineTo(x + xOff, y - yOff - 5);
-          p.lineTo(x + xOff + 5, y - yOff);
-          p.lineTo(x + xOff, y - yOff + 5);
+          p.moveTo(x + xOff - fontSize, y - yOff);
+          p.lineTo(x + xOff, y - yOff - fontSize);
+          p.lineTo(x + xOff + fontSize, y - yOff);
+          p.lineTo(x + xOff, y - yOff + fontSize);
           p.closePath();
           
           gi.fill(p);
           
           //Left Dot
-          p.moveTo(x - xOff + 5, y - yOff);
-          p.lineTo(x - xOff, y - yOff - 5);
-          p.lineTo(x - xOff - 5, y - yOff);
-          p.lineTo(x - xOff, y - yOff + 5);
+          p.moveTo(x - xOff + fontSize, y - yOff);
+          p.lineTo(x - xOff, y - yOff - fontSize);
+          p.lineTo(x - xOff - fontSize, y - yOff);
+          p.lineTo(x - xOff, y - yOff + fontSize);
           p.closePath();
           
           gi.fill(p);
           
           //Long Horizontal Line
-          p.moveTo(x + xOff - 10, y - yOff - 2.5);
-          p.lineTo(x + xOff - 10, y - yOff + 2.5);
-          p.lineTo(x - xOff + 10, y - yOff + 2.5);
-          p.lineTo(x - xOff + 10, y - yOff - 2.5);
+          p.moveTo(x + xOff - (fontSize * 2), y - yOff - (fontSize / 2));
+          p.lineTo(x + xOff - (fontSize * 2), y - yOff + (fontSize / 2));
+          p.lineTo(x - xOff + (fontSize * 2), y - yOff + (fontSize / 2));
+          p.lineTo(x - xOff + (fontSize * 2), y - yOff - (fontSize / 2));
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 20, yOff + 20};
+          int[] letterOffset = ZenianLetter.O_WITH_STROKE.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -216,42 +226,44 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Right Dot
-          p.moveTo(x + xOff - 5, y + yOff - 10);
-          p.lineTo(x + xOff, y + yOff - 5);
-          p.lineTo(x + xOff + 5, y + yOff - 10);
-          p.lineTo(x + xOff, y + yOff - 15);
+          p.moveTo(x + xOff - fontSize, y + yOff - (fontSize * 2));
+          p.lineTo(x + xOff, y + yOff - fontSize);
+          p.lineTo(x + xOff + fontSize, y + yOff - (fontSize * 2));
+          p.lineTo(x + xOff, y + yOff - (fontSize * 3));
           p.closePath();
           
           gi.fill(p);
           
           //Left Dot
-          p.moveTo(x - xOff + 5, y + yOff - 10);
-          p.lineTo(x - xOff, y + yOff - 5);
-          p.lineTo(x - xOff - 5, y + yOff - 10);
-          p.lineTo(x - xOff, y + yOff - 15);
+          p.moveTo(x - xOff + fontSize, y + yOff - (fontSize * 2));
+          p.lineTo(x - xOff, y + yOff - fontSize);
+          p.lineTo(x - xOff - fontSize, y + yOff - (fontSize * 2));
+          p.lineTo(x - xOff, y + yOff - (fontSize * 3));
           p.closePath();
           
           gi.fill(p);
           
           //Right Vertical Line
-          p.moveTo(x + xOff - 2.5, y + yOff - 20);
-          p.lineTo(x + xOff + 2.5, y + yOff - 20);
-          p.lineTo(x + xOff + 2.5, y - yOff + 5);
-          p.lineTo(x + xOff - 2.5, y - yOff + 5);
+          p.moveTo(x + xOff - (fontSize / 2), y + yOff - (fontSize * 4));
+          p.lineTo(x + xOff + (fontSize / 2), y + yOff - (fontSize * 4));
+          p.lineTo(x + xOff + (fontSize / 2), y - yOff + fontSize);
+          p.lineTo(x + xOff - (fontSize / 2), y - yOff + fontSize);
           p.closePath();
           
           gi.fill(p);
 
           //Left Vertical Line
-          p.moveTo(x - xOff + 2.5, y + yOff - 20);
-          p.lineTo(x - xOff - 2.5, y + yOff - 20);
-          p.lineTo(x - xOff - 2.5, y - yOff + 5);
-          p.lineTo(x - xOff + 2.5, y - yOff + 5);
+          p.moveTo(x - xOff + (fontSize / 2), y + yOff - (fontSize * 4));
+          p.lineTo(x - xOff - (fontSize / 2), y + yOff - (fontSize * 4));
+          p.lineTo(x - xOff - (fontSize / 2), y - yOff + fontSize);
+          p.lineTo(x - xOff + (fontSize / 2), y - yOff + fontSize);
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 20, yOff + 5};
+          int[] letterOffset = ZenianLetter.OPEN_E.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -266,33 +278,35 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
 
           //Right Dot
-          p.moveTo(x + xOff - 5, y + yOff);
-          p.lineTo(x + xOff, y + yOff + 5);
-          p.lineTo(x + xOff + 5, y + yOff);
-          p.lineTo(x + xOff, y + yOff - 5);
+          p.moveTo(x + xOff - fontSize, y + yOff);
+          p.lineTo(x + xOff, y + yOff + fontSize);
+          p.lineTo(x + xOff + fontSize, y + yOff);
+          p.lineTo(x + xOff, y + yOff - fontSize);
           p.closePath();
           
           gi.fill(p);
           
           //Left Dot
-          p.moveTo(x - xOff + 5, y + yOff);
-          p.lineTo(x - xOff, y + yOff + 5);
-          p.lineTo(x - xOff - 5, y + yOff);
-          p.lineTo(x - xOff, y + yOff - 5);
+          p.moveTo(x - xOff + fontSize, y + yOff);
+          p.lineTo(x - xOff, y + yOff + fontSize);
+          p.lineTo(x - xOff - fontSize, y + yOff);
+          p.lineTo(x - xOff, y + yOff - fontSize);
           p.closePath();
           
           gi.fill(p);
           
           //Long Horizontal Line
-          p.moveTo(x + xOff - 10, y + yOff + 2.5);
-          p.lineTo(x + xOff - 10, y + yOff - 2.5);
-          p.lineTo(x - xOff + 10, y + yOff - 2.5);
-          p.lineTo(x - xOff + 10, y + yOff + 2.5);
+          p.moveTo(x + xOff - (fontSize * 2), y + yOff + (fontSize / 2));
+          p.lineTo(x + xOff - (fontSize * 2), y + yOff - (fontSize / 2));
+          p.lineTo(x - xOff + (fontSize * 2), y + yOff - (fontSize / 2));
+          p.lineTo(x - xOff + (fontSize * 2), y + yOff + (fontSize / 2));
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 20, yOff + 20};
+          int[] letterOffset = ZenianLetter.LIGATURE_OE.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -307,24 +321,26 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Upper Dot
-          p.moveTo(x, y - yOff + 5);
-          p.lineTo(x - 5, y - yOff);
-          p.lineTo(x, y - yOff - 5);
-          p.lineTo(x + 5, y - yOff);
+          p.moveTo(x, y - yOff + fontSize);
+          p.lineTo(x - fontSize, y - yOff);
+          p.lineTo(x, y - yOff - fontSize);
+          p.lineTo(x + fontSize, y - yOff);
           p.closePath();
           
           gi.fill(p);
           
           //Lower Dot
-          p.moveTo(x, y + yOff + 5);
-          p.lineTo(x - 5, y + yOff);
-          p.lineTo(x, y + yOff - 5);
-          p.lineTo(x + 5, y + yOff);
+          p.moveTo(x, y + yOff + fontSize);
+          p.lineTo(x - fontSize, y + yOff);
+          p.lineTo(x, y + yOff - fontSize);
+          p.lineTo(x + fontSize, y + yOff);
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 5, yOff + 20};
+          int[] letterOffset = ZenianLetter.A.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -339,42 +355,44 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Upper Horizontal Line
-          p.moveTo(x - 2.5, y - yOff + 10);
-          p.lineTo(x - 2.5, y - yOff - 10);
-          p.lineTo(x + 2.5, y - yOff - 10);
-          p.lineTo(x + 2.5, y - yOff + 10);
+          p.moveTo(x - (fontSize / 2), y - yOff + (fontSize * 2));
+          p.lineTo(x - (fontSize / 2), y - yOff - (fontSize * 2));
+          p.lineTo(x + (fontSize / 2), y - yOff - (fontSize * 2));
+          p.lineTo(x + (fontSize / 2), y - yOff + (fontSize * 2));
           p.closePath();
           
           gi.fill(p);
           
           //Lower Horizontal Line
-          p.moveTo(x - 2.5, y + yOff - 10);
-          p.lineTo(x - 2.5, y + yOff + 10);
-          p.lineTo(x + 2.5, y + yOff + 10);
-          p.lineTo(x + 2.5, y + yOff - 10);
+          p.moveTo(x - (fontSize / 2), y + yOff - (fontSize * 2));
+          p.lineTo(x - (fontSize / 2), y + yOff + (fontSize * 2));
+          p.lineTo(x + (fontSize / 2), y + yOff + (fontSize * 2));
+          p.lineTo(x + (fontSize / 2), y + yOff - (fontSize * 2));
           p.closePath();
           
           gi.fill(p);
           
           //Upper Dot
-          p.moveTo(x, y - yOff - 15);
-          p.lineTo(x - 5, y - yOff - 20);
-          p.lineTo(x, y - yOff - 25);
-          p.lineTo(x + 5, y - yOff - 20);
+          p.moveTo(x, y - yOff - (fontSize * 3));
+          p.lineTo(x - fontSize, y - yOff - (fontSize * 4));
+          p.lineTo(x, y - yOff - (fontSize * 5));
+          p.lineTo(x + fontSize, y - yOff - (fontSize * 4));
           p.closePath();
           
           gi.fill(p);
           
           //Lower Dot
-          p.moveTo(x, y + yOff + 15);
-          p.lineTo(x - 5, y + yOff + 20);
-          p.lineTo(x, y + yOff + 25);
-          p.lineTo(x + 5, y + yOff + 20);
+          p.moveTo(x, y + yOff + (fontSize * 3));
+          p.lineTo(x - fontSize, y + yOff + (fontSize * 4));
+          p.lineTo(x, y + yOff + (fontSize * 5));
+          p.lineTo(x + fontSize, y + yOff + (fontSize * 4));
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 5, yOff + 40};
+          int[] letterOffset = ZenianLetter.LIGATURE_CAPITAL_OE.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -389,23 +407,25 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Right Line
-          p.moveTo(x + xOff - 10, y - 5);
-          p.lineTo(x + xOff - 10, y);
-          p.lineTo(x + xOff + 30, y + 15);
-          p.lineTo(x + xOff + 30, y + 10);
+          p.moveTo(x + xOff - (fontSize * 2), y - fontSize);
+          p.lineTo(x + xOff - (fontSize * 2), y);
+          p.lineTo(x + xOff + (fontSize * 6), y + (fontSize * 3));
+          p.lineTo(x + xOff + (fontSize * 6), y + (fontSize * 2));
           p.closePath();
           
           gi.fill(p);
           
           //Left Line
-          p.moveTo(x - xOff + 10, y - 5);
-          p.lineTo(x - xOff + 10, y);
-          p.lineTo(x - xOff - 30, y + 15);
-          p.lineTo(x - xOff - 30, y + 10);
+          p.moveTo(x - xOff + (fontSize * 2), y - fontSize);
+          p.lineTo(x - xOff + (fontSize * 2), y);
+          p.lineTo(x - xOff - (fontSize * 6), y + (fontSize * 3));
+          p.lineTo(x - xOff - (fontSize * 6), y + (fontSize * 2));
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 45, yOff + 5};
+          int[] letterOffset = ZenianLetter.T.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -420,23 +440,25 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Right Line
-          p.moveTo(x + xOff - 10, y + 5);
-          p.lineTo(x + xOff - 10, y);
-          p.lineTo(x + xOff + 30, y - 15);
-          p.lineTo(x + xOff + 30, y - 10);
+          p.moveTo(x + xOff - (fontSize * 2), y + fontSize);
+          p.lineTo(x + xOff - (fontSize * 2), y);
+          p.lineTo(x + xOff + (fontSize * 6), y - (fontSize * 3));
+          p.lineTo(x + xOff + (fontSize * 6), y - (fontSize * 2));
           p.closePath();
           
           gi.fill(p);
           
           //Left Line
-          p.moveTo(x - xOff + 10, y + 5);
-          p.lineTo(x - xOff + 10, y);
-          p.lineTo(x - xOff - 30, y - 15);
-          p.lineTo(x - xOff - 30, y - 10);
+          p.moveTo(x - xOff + (fontSize * 2), y + fontSize);
+          p.lineTo(x - xOff + (fontSize * 2), y);
+          p.lineTo(x - xOff - (fontSize * 6), y - (fontSize * 3));
+          p.lineTo(x - xOff - (fontSize * 6), y - (fontSize * 2));
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 45, yOff + 5};
+          int[] letterOffset = ZenianLetter.D.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -451,28 +473,30 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Right Line
-          p.moveTo(x + xOff - 10, y);
-          p.lineTo(x + xOff + 15, y + 15);
-          p.lineTo(x + xOff + 40, y);
-          p.lineTo(x + xOff + 40, y - 5);
-          p.lineTo(x + xOff + 15, y + 10);
-          p.lineTo(x + xOff - 10, y - 5);
+          p.moveTo(x + xOff - (fontSize * 2), y);
+          p.lineTo(x + xOff + (fontSize * 3), y + (fontSize * 3));
+          p.lineTo(x + xOff + (fontSize * 8), y);
+          p.lineTo(x + xOff + (fontSize * 8), y - fontSize);
+          p.lineTo(x + xOff + (fontSize * 3), y + (fontSize * 2));
+          p.lineTo(x + xOff - (fontSize * 2), y - fontSize);
           p.closePath();
           
           gi.fill(p);
           
           //Left Line
-          p.moveTo(x - xOff + 10, y);
-          p.lineTo(x - xOff - 15, y + 15);
-          p.lineTo(x - xOff - 40, y);
-          p.lineTo(x - xOff - 40, y - 5);
-          p.lineTo(x - xOff - 15, y + 10);
-          p.lineTo(x - xOff + 10, y - 5);
+          p.moveTo(x - xOff + (fontSize * 2), y);
+          p.lineTo(x - xOff - (fontSize * 3), y + (fontSize * 3));
+          p.lineTo(x - xOff - (fontSize * 8), y);
+          p.lineTo(x - xOff - (fontSize * 8), y - fontSize);
+          p.lineTo(x - xOff - (fontSize * 3), y + (fontSize * 2));
+          p.lineTo(x - xOff + (fontSize * 2), y - fontSize);
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 55, yOff + 5};
+          int[] letterOffset = ZenianLetter.T_WITH_RETROFLEX_HOOK.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -487,28 +511,30 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Right Line
-          p.moveTo(x + xOff - 10, y);
-          p.lineTo(x + xOff + 15, y - 15);
-          p.lineTo(x + xOff + 40, y);
-          p.lineTo(x + xOff + 40, y + 5);
-          p.lineTo(x + xOff + 15, y - 10);
-          p.lineTo(x + xOff - 10, y + 5);
+          p.moveTo(x + xOff - (fontSize * 2), y);
+          p.lineTo(x + xOff + (fontSize * 3), y - (fontSize * 3));
+          p.lineTo(x + xOff + (fontSize * 8), y);
+          p.lineTo(x + xOff + (fontSize * 8), y + fontSize);
+          p.lineTo(x + xOff + (fontSize * 3), y - (fontSize * 2));
+          p.lineTo(x + xOff - (fontSize * 2), y + fontSize);
           p.closePath();
           
           gi.fill(p);
           
           //Left Line
-          p.moveTo(x - xOff + 10, y);
-          p.lineTo(x - xOff - 15, y - 15);
-          p.lineTo(x - xOff - 40, y);
-          p.lineTo(x - xOff - 40, y + 5);
-          p.lineTo(x - xOff - 15, y - 10);
-          p.lineTo(x - xOff + 10, y + 5);
+          p.moveTo(x - xOff + (fontSize * 2), y);
+          p.lineTo(x - xOff - (fontSize * 3), y - (fontSize * 3));
+          p.lineTo(x - xOff - (fontSize * 8), y);
+          p.lineTo(x - xOff - (fontSize * 8), y + fontSize);
+          p.lineTo(x - xOff - (fontSize * 3), y - (fontSize * 2));
+          p.lineTo(x - xOff + (fontSize * 2), y + fontSize);
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 55, yOff + 5};
+          int[] letterOffset = ZenianLetter.D_WITH_TAIL.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -523,24 +549,26 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Upper Curve
-          p.moveTo(x + xOff - 5, y - yOff + 5);
-          p.quadTo(x, y - yOff + 15, x - xOff + 5, y - yOff + 5);
-          p.lineTo(x - xOff + 5, y - yOff);
-          p.quadTo(x, y - yOff + 10, x + xOff - 5, y - yOff);
+          p.moveTo(x + xOff - fontSize, y - yOff + fontSize);
+          p.quadTo(x, y - yOff + (fontSize * 3), x - xOff + fontSize, y - yOff + fontSize);
+          p.lineTo(x - xOff + fontSize, y - yOff);
+          p.quadTo(x, y - yOff + (fontSize * 2), x + xOff - fontSize, y - yOff);
           p.closePath();
           
           gi.fill(p);
           
           //Lower Curve
-          p.moveTo(x + xOff - 5, y + yOff - 5);
-          p.quadTo(x, y + yOff - 15, x - xOff + 5, y + yOff - 5);
-          p.lineTo(x - xOff + 5, y + yOff);
-          p.quadTo(x, y + yOff - 10, x + xOff - 5, y + yOff);
+          p.moveTo(x + xOff - fontSize, y + yOff - fontSize);
+          p.quadTo(x, y + yOff - (fontSize * 3), x - xOff + fontSize, y + yOff - fontSize);
+          p.lineTo(x - xOff + fontSize, y + yOff);
+          p.quadTo(x, y + yOff - (fontSize * 2), x + xOff - fontSize, y + yOff);
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 5, yOff + 20};
+          int[] letterOffset = ZenianLetter.THETA.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -555,23 +583,25 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Upper Curve
-          p.moveTo(x + xOff - 5, y - yOff + 5);
-          p.quadTo(x, y - yOff - 5, x - xOff + 5, y - yOff + 5);
-          p.lineTo(x - xOff + 5, y - yOff);
-          p.quadTo(x, y - yOff - 10, x + xOff - 5, y - yOff);
+          p.moveTo(x + xOff - fontSize, y - yOff + fontSize);
+          p.quadTo(x, y - yOff - fontSize, x - xOff + fontSize, y - yOff + fontSize);
+          p.lineTo(x - xOff + fontSize, y - yOff);
+          p.quadTo(x, y - yOff - (fontSize * 2), x + xOff - fontSize, y - yOff);
           p.closePath();
           
           gi.fill(p);
           
-          p.moveTo(x + xOff - 5, y + yOff - 5);
-          p.quadTo(x, y + yOff + 5, x - xOff + 5, y + yOff - 5);
-          p.lineTo(x - xOff + 5, y + yOff);
-          p.quadTo(x, y + yOff + 10, x + xOff - 5, y + yOff);
+          p.moveTo(x + xOff - fontSize, y + yOff - fontSize);
+          p.quadTo(x, y + yOff + fontSize, x - xOff + fontSize, y + yOff - fontSize);
+          p.lineTo(x - xOff + fontSize, y + yOff);
+          p.quadTo(x, y + yOff + (fontSize * 2), x + xOff - fontSize, y + yOff);
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 5, yOff + 20};
+          int[] letterOffset = ZenianLetter.ETH.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -586,24 +616,26 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Upper Curve
-          p.moveTo(x + xOff - 5, y - yOff + 5);
-          p.quadTo(x + xOff - 15, y, x + xOff - 5, y + yOff - 5);
-          p.lineTo(x + xOff, y + yOff - 5);
-          p.quadTo(x + xOff - 10, y, x + xOff, y - yOff + 5);
+          p.moveTo(x + xOff - fontSize, y - yOff + fontSize);
+          p.quadTo(x + xOff - (fontSize * 3), y, x + xOff - fontSize, y + yOff - fontSize);
+          p.lineTo(x + xOff, y + yOff - fontSize);
+          p.quadTo(x + xOff - (fontSize * 2), y, x + xOff, y - yOff + fontSize);
           p.closePath();
           
           gi.fill(p);
           
           //Lower Curve
-          p.moveTo(x - xOff + 5, y - yOff + 5);
-          p.quadTo(x - xOff + 15, y, x - xOff + 5, y + yOff - 5);
-          p.lineTo(x - xOff, y + yOff - 5);
-          p.quadTo(x - xOff + 10, y, x - xOff, y - yOff + 5);
+          p.moveTo(x - xOff + fontSize, y - yOff + fontSize);
+          p.quadTo(x - xOff + (fontSize * 3), y, x - xOff + fontSize, y + yOff - fontSize);
+          p.lineTo(x - xOff, y + yOff - fontSize);
+          p.quadTo(x - xOff + (fontSize * 2), y, x - xOff, y - yOff + fontSize);
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 20, yOff + 5};
+          int[] letterOffset = ZenianLetter.S.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -618,24 +650,26 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Upper Curve
-          p.moveTo(x + xOff - 5, y - yOff + 5);
-          p.quadTo(x + xOff + 5, y, x + xOff - 5, y + yOff - 5);
-          p.lineTo(x + xOff, y + yOff - 5);
-          p.quadTo(x + xOff + 10, y, x + xOff, y - yOff + 5);
+          p.moveTo(x + xOff - fontSize, y - yOff + fontSize);
+          p.quadTo(x + xOff + fontSize, y, x + xOff - fontSize, y + yOff - fontSize);
+          p.lineTo(x + xOff, y + yOff - fontSize);
+          p.quadTo(x + xOff + (fontSize * 2), y, x + xOff, y - yOff + fontSize);
           p.closePath();
           
           gi.fill(p);
           
           //Lower Curve
-          p.moveTo(x - xOff + 5, y - yOff + 5);
-          p.quadTo(x - xOff - 5, y, x - xOff + 5, y + yOff - 5);
-          p.lineTo(x - xOff, y + yOff - 5);
-          p.quadTo(x - xOff - 10, y, x - xOff, y - yOff + 5);
+          p.moveTo(x - xOff + fontSize, y - yOff + fontSize);
+          p.quadTo(x - xOff - fontSize, y, x - xOff + fontSize, y + yOff - fontSize);
+          p.lineTo(x - xOff, y + yOff - fontSize);
+          p.quadTo(x - xOff - (fontSize * 2), y, x - xOff, y - yOff + fontSize);
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 20, yOff + 5};
+          int[] letterOffset = ZenianLetter.Z.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -650,24 +684,26 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Right Curve
-          p.moveTo(x + xOff - 15, y - yOff);
-          p.quadTo(x + xOff - 15, y - yOff + 15, x + xOff, y - yOff + 15);
-          p.lineTo(x + xOff, y - yOff + 10);
-          p.quadTo(x + xOff - 10, y - yOff + 10, x + xOff - 10, y - yOff);
+          p.moveTo(x + xOff - (fontSize * 3), y - yOff);
+          p.quadTo(x + xOff - (fontSize * 3), y - yOff + (fontSize * 3), x + xOff, y - yOff + (fontSize * 3));
+          p.lineTo(x + xOff, y - yOff + (fontSize * 2));
+          p.quadTo(x + xOff - (fontSize * 2), y - yOff + (fontSize * 2), x + xOff - (fontSize * 2), y - yOff);
           p.closePath();
           
           gi.fill(p);
           
           //Left Curve
-          p.moveTo(x - xOff + 15, y - yOff);
-          p.quadTo(x - xOff + 15, y - yOff + 15, x - xOff, y - yOff + 15);
-          p.lineTo(x - xOff, y - yOff + 10);
-          p.quadTo(x - xOff + 10, y - yOff + 10, x - xOff + 10, y - yOff);
+          p.moveTo(x - xOff + (fontSize * 3), y - yOff);
+          p.quadTo(x - xOff + (fontSize * 3), y - yOff + (fontSize * 3), x - xOff, y - yOff + (fontSize * 3));
+          p.lineTo(x - xOff, y - yOff + (fontSize * 2));
+          p.quadTo(x - xOff + (fontSize * 2), y - yOff + (fontSize * 2), x - xOff + (fontSize * 2), y - yOff);
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 15, yOff + 15};
+          int[] letterOffset = ZenianLetter.ESH.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -682,24 +718,26 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Right Curve
-          p.moveTo(x + xOff - 15, y - yOff);
-          p.quadTo(x + xOff, y - yOff, x + xOff, y - yOff + 15);
-          p.lineTo(x + xOff - 5, y - yOff + 15);
-          p.quadTo(x + xOff - 5, y - yOff + 5, x + xOff - 15, y - yOff + 5);
+          p.moveTo(x + xOff - (fontSize * 3), y - yOff);
+          p.quadTo(x + xOff, y - yOff, x + xOff, y - yOff + (fontSize * 3));
+          p.lineTo(x + xOff - fontSize, y - yOff + (fontSize * 3));
+          p.quadTo(x + xOff - fontSize, y - yOff + fontSize, x + xOff - (fontSize * 3), y - yOff + fontSize);
           p.closePath();
           
           gi.fill(p);
           
           //Left Curve
-          p.moveTo(x - xOff + 15, y - yOff);
-          p.quadTo(x - xOff, y - yOff, x - xOff, y - yOff + 15);
-          p.lineTo(x - xOff + 5, y - yOff + 15);
-          p.quadTo(x - xOff + 5, y - yOff + 5, x - xOff + 15, y - yOff + 5);
+          p.moveTo(x - xOff + (fontSize * 3), y - yOff);
+          p.quadTo(x - xOff, y - yOff, x - xOff, y - yOff + (fontSize * 3));
+          p.lineTo(x - xOff + fontSize, y - yOff + (fontSize * 3));
+          p.quadTo(x - xOff + fontSize, y - yOff + fontSize, x - xOff + (fontSize * 3), y - yOff + fontSize);
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 15, yOff + 15};
+          int[] letterOffset = ZenianLetter.EZH.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -714,24 +752,26 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Right Curve
-          p.moveTo(x + xOff - 15, y + yOff);
-          p.quadTo(x + xOff - 15, y + yOff - 15, x + xOff, y + yOff - 15);
-          p.lineTo(x + xOff, y + yOff - 10);
-          p.quadTo(x + xOff - 10, y + yOff - 10, x + xOff - 10, y + yOff);
+          p.moveTo(x + xOff - (fontSize * 3), y + yOff);
+          p.quadTo(x + xOff - (fontSize * 3), y + yOff - (fontSize * 3), x + xOff, y + yOff - (fontSize * 3));
+          p.lineTo(x + xOff, y + yOff - (fontSize * 2));
+          p.quadTo(x + xOff - (fontSize * 2), y + yOff - (fontSize * 2), x + xOff - (fontSize * 2), y + yOff);
           p.closePath();
           
           gi.fill(p);
           
           //Left Curve
-          p.moveTo(x - xOff + 15, y + yOff);
-          p.quadTo(x - xOff + 15, y + yOff - 15, x - xOff, y + yOff - 15);
-          p.lineTo(x - xOff, y + yOff - 10);
-          p.quadTo(x - xOff + 10, y + yOff - 10, x - xOff + 10, y + yOff);
+          p.moveTo(x - xOff + (fontSize * 3), y + yOff);
+          p.quadTo(x - xOff + (fontSize * 3), y + yOff - (fontSize * 3), x - xOff, y + yOff - (fontSize * 3));
+          p.lineTo(x - xOff, y + yOff - (fontSize * 2));
+          p.quadTo(x - xOff + (fontSize * 2), y + yOff - (fontSize * 2), x - xOff + (fontSize * 2), y + yOff);
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 15, yOff + 15};
+          int[] letterOffset = ZenianLetter.S_WITH_HOOK.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -746,24 +786,26 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Right Curve
-          p.moveTo(x + xOff - 15, y + yOff);
-          p.quadTo(x + xOff, y + yOff, x + xOff, y + yOff - 15);
-          p.lineTo(x + xOff - 5, y + yOff - 15);
-          p.quadTo(x + xOff - 5, y + yOff - 5, x + xOff - 15, y + yOff - 5);
+          p.moveTo(x + xOff - (fontSize * 3), y + yOff);
+          p.quadTo(x + xOff, y + yOff, x + xOff, y + yOff - (fontSize * 3));
+          p.lineTo(x + xOff - fontSize, y + yOff - (fontSize * 3));
+          p.quadTo(x + xOff - fontSize, y + yOff - fontSize, x + xOff - (fontSize * 3), y + yOff - fontSize);
           p.closePath();
           
           gi.fill(p);
           
           //Left Curve
-          p.moveTo(x - xOff + 15, y + yOff);
-          p.quadTo(x - xOff, y + yOff, x - xOff, y + yOff - 15);
-          p.lineTo(x - xOff + 5, y + yOff - 15);
-          p.quadTo(x - xOff + 5, y + yOff - 5, x - xOff + 15, y + yOff - 5);
+          p.moveTo(x - xOff + (fontSize * 3), y + yOff);
+          p.quadTo(x - xOff, y + yOff, x - xOff, y + yOff - (fontSize * 3));
+          p.lineTo(x - xOff + fontSize, y + yOff - (fontSize * 3));
+          p.quadTo(x - xOff + fontSize, y + yOff - fontSize, x - xOff + (fontSize * 3), y + yOff - fontSize);
           p.closePath();
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 15, yOff + 15};
+          int[] letterOffset = ZenianLetter.Z_WITH_RETROFLEX_HOOK.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -778,23 +820,25 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Right Line
-          p.moveTo(x + xOff - 10, y - yOff + 5);
-          p.lineTo(x + xOff - 10, y - yOff + 10);
-          p.lineTo(x + xOff + 30, y - yOff + 25);
-          p.lineTo(x + xOff + 30, y - yOff + 20);
+          p.moveTo(x + xOff - (fontSize * 2), y - yOff + fontSize);
+          p.lineTo(x + xOff - (fontSize * 2), y - yOff + (fontSize * 2));
+          p.lineTo(x + xOff + (fontSize * 6), y - yOff + (fontSize * 5));
+          p.lineTo(x + xOff + (fontSize * 6), y - yOff + (fontSize * 4));
           p.closePath();
           
           gi.fill(p);
           
           //Left Line
-          p.moveTo(x - xOff + 10, y - yOff + 5);
-          p.lineTo(x - xOff + 10, y - yOff + 10);
-          p.lineTo(x - xOff - 30, y - yOff + 25);
-          p.lineTo(x - xOff - 30, y - yOff + 20);
+          p.moveTo(x - xOff + (fontSize * 2), y - yOff + fontSize);
+          p.lineTo(x - xOff + (fontSize * 2), y - yOff + (fontSize * 2));
+          p.lineTo(x - xOff - (fontSize * 6), y - yOff + (fontSize * 5));
+          p.lineTo(x - xOff - (fontSize * 6), y - yOff + (fontSize * 4));
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 45, yOff + 5};
+          int[] letterOffset = ZenianLetter.V_WITH_HOOK.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }
@@ -809,23 +853,25 @@ public class LetterRenderHandler
           GeneralPath p = new GeneralPath();
           
           //Right Line
-          p.moveTo(x + xOff - 10, y + yOff - 5);
-          p.lineTo(x + xOff - 10, y + yOff - 10);
-          p.lineTo(x + xOff + 30, y + yOff - 25);
-          p.lineTo(x + xOff + 30, y + yOff - 20);
+          p.moveTo(x + xOff - (fontSize * 2), y + yOff - fontSize);
+          p.lineTo(x + xOff - (fontSize * 2), y + yOff - (fontSize * 2));
+          p.lineTo(x + xOff + (fontSize * 6), y + yOff - (fontSize * 5));
+          p.lineTo(x + xOff + (fontSize * 6), y + yOff - (fontSize * 4));
           p.closePath();
           
           gi.fill(p);
           
           //Left Line
-          p.moveTo(x - xOff + 10, y + yOff - 5);
-          p.lineTo(x - xOff + 10, y + yOff - 10);
-          p.lineTo(x - xOff - 30, y + yOff - 25);
-          p.lineTo(x - xOff - 30, y + yOff - 20);
+          p.moveTo(x - xOff + (fontSize * 2), y + yOff - fontSize);
+          p.lineTo(x - xOff + (fontSize * 2), y + yOff - (fontSize * 2));
+          p.lineTo(x - xOff - (fontSize * 6), y + yOff - (fontSize * 5));
+          p.lineTo(x - xOff - (fontSize * 6), y + yOff - (fontSize * 4));
           
           gi.fill(p);
           
-          int[] newOff = new int[] {x, y, xOff + 45, yOff + 5};
+          int[] letterOffset = ZenianLetter.J.getLetterOffset(fontSize);
+          
+          int[] newOff = new int[] {x, y, xOff + letterOffset[0], yOff + letterOffset[1]};
           
           return newOff;
      }

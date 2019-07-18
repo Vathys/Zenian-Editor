@@ -42,99 +42,99 @@ enum ZenianLetter
           return this.sym;
      }
      
-     public int[] getLetterOffset()
+     public int[] getLetterOffset(int fontSize)
      {
           int[] offset = new int[2];
           
           switch(this)
           {
                case I: 
-                    offset[0] = 20;
-                    offset[1] = 5;
+                    offset[0] = fontSize * 4;//20;
+                    offset[1] = fontSize;//5;
                     break;
                case Y: 
-                    offset[0] = 40;
-                    offset[1] = 5;
+                    offset[0] = fontSize * 8;//40;
+                    offset[1] = fontSize;//5;
                     break;
                case E:
-                    offset[0] = 20;
-                    offset[1] = 5;
+                    offset[0] = fontSize * 4;//20;
+                    offset[1] = fontSize;//5;
                     break;
                case O_WITH_STROKE:
-                    offset[0] = 20;
-                    offset[1] = 20;
+                    offset[0] = fontSize * 4;//20;
+                    offset[1] = fontSize * 4;//20;
                     break;
                case OPEN_E:
-                    offset[0] = 20;
-                    offset[1] = 5;
+                    offset[0] = fontSize * 4;//20;
+                    offset[1] = fontSize;//5;
                     break;
                case LIGATURE_OE:
-                    offset[0] = 20;
-                    offset[1] = 20;
+                    offset[0] = fontSize * 4;//20;
+                    offset[1] = fontSize * 4;//20;
                     break;
                case A:
-                    offset[0] = 5;
-                    offset[1] = 20;
+                    offset[0] = fontSize;//5;
+                    offset[1] = fontSize * 4;//20;
                     break;
                case LIGATURE_CAPITAL_OE:
-                    offset[0] = 5;
-                    offset[1] = 40;
+                    offset[0] = fontSize;//5;
+                    offset[1] = fontSize * 8;//40;
                     break;
                case T:
-                    offset[0] = 45;
-                    offset[1] = 5;
+                    offset[0] = fontSize * 9;//45;
+                    offset[1] = fontSize;//5;
                     break;
                case D:
-                    offset[0] = 45;
-                    offset[1] = 5;
+                    offset[0] = fontSize * 9;//45;
+                    offset[1] = fontSize;//5;
                     break;
                case T_WITH_RETROFLEX_HOOK:
-                    offset[0] = 55;
-                    offset[1] = 5;
+                    offset[0] = fontSize * 11;//55;
+                    offset[1] = fontSize;//5;
                     break;
                case D_WITH_TAIL:
-                    offset[0] = 55;
-                    offset[1] = 5;
+                    offset[0] = fontSize * 11;//55;
+                    offset[1] = fontSize;//5;
                     break;
                case THETA:
-                    offset[0] = 5;
-                    offset[1] = 20;
+                    offset[0] = fontSize;//5;
+                    offset[1] = fontSize * 4;//20;
                     break;
                case ETH:
-                    offset[0] = 5;
-                    offset[1] = 20;
+                    offset[0] = fontSize;//5;
+                    offset[1] = fontSize * 4;//20;
                     break;
                case S:
-                    offset[0] = 20;
-                    offset[1] = 5;
+                    offset[0] = fontSize * 4;//20;
+                    offset[1] = fontSize;//5;
                     break;
                case Z:
-                    offset[0] = 20;
-                    offset[1] = 5;
+                    offset[0] = fontSize * 4;//20;
+                    offset[1] = fontSize;//5;
                     break;
                case ESH:
-                    offset[0] = 15;
-                    offset[1] = 15;
+                    offset[0] = fontSize * 3;//15;
+                    offset[1] = fontSize * 3;//15;
                     break;
                case EZH:
-                    offset[0] = 15;
-                    offset[1] = 15;
+                    offset[0] = fontSize * 3;//15;
+                    offset[1] = fontSize * 3;//15;
                     break;
                case S_WITH_HOOK:
-                    offset[0] = 15;
-                    offset[1] = 15;
+                    offset[0] = fontSize * 3;//15;
+                    offset[1] = fontSize * 3;//15;
                     break;
                case Z_WITH_RETROFLEX_HOOK:
-                    offset[0] = 15;
-                    offset[1] = 15;
+                    offset[0] = fontSize * 3;//15;
+                    offset[1] = fontSize * 3;//15;
                     break;
                case V_WITH_HOOK:
-                    offset[0] = 45;
-                    offset[1] = 5;
+                    offset[0] = fontSize * 9;//45;
+                    offset[1] = fontSize;//5;
                     break;
                case J:
-                    offset[0] = 45;
-                    offset[1] = 5;
+                    offset[0] = fontSize * 9;//45;
+                    offset[1] = fontSize;//5;
                     break;
                default:
                     offset[0] = 0;

@@ -1,6 +1,5 @@
 package main;
 
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -11,7 +10,6 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -19,7 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class Editor extends Canvas implements ActionListener
+public class Editor extends JPanel implements ActionListener
 {
      private static final long serialVersionUID = 1L;
      
@@ -31,6 +29,7 @@ public class Editor extends Canvas implements ActionListener
      
      private ArrayList<GlyphColumn> grid;
      private int currentColumn;
+     private int fontSize;
      
      private Image buffImage;
      private Graphics offscreen;
@@ -56,8 +55,9 @@ public class Editor extends Canvas implements ActionListener
       * */
      public void init()
      {
+          fontSize = 5;
           grid = new ArrayList<GlyphColumn>();
-          grid.add(new GlyphColumn(50, 50, 40, 2 * Window.HEIGHT / 3));
+          grid.add(new GlyphColumn(fontSize * 10, fontSize * 10, fontSize * 8, fontSize, this.getSize().height));
           currentColumn = 0;
           newGlyph = false;
           runover = false;
@@ -255,9 +255,9 @@ public class Editor extends Canvas implements ActionListener
                int newX = 50;
                for(int i = 0; i < grid.size(); i++)
                {
-                    newX += grid.get(i).cellWidth + 50;
+                    newX += grid.get(i).cellWidth + fontSize * 10;
                }
-               grid.add(new GlyphColumn(newX, 50, 40, 2 * Window.HEIGHT / 3, grid.get(currentColumn).removeLastGlyph()));
+               grid.add(new GlyphColumn(newX, fontSize * 10, fontSize * 8, 5, this.getSize().height, grid.get(currentColumn).removeLastGlyph()));
                currentColumn += 1;
                runover = false;
           }
@@ -268,7 +268,7 @@ public class Editor extends Canvas implements ActionListener
                {
                     newX += grid.get(i).cellWidth + 50;
                }
-               grid.add(new GlyphColumn(newX, 50, 40, 2 * Window.HEIGHT / 3));
+               grid.add(new GlyphColumn(newX, fontSize * 10, fontSize * 8, fontSize, this.getSize().height));
                currentColumn += 1;
                newColumn = false;
           }
@@ -309,29 +309,20 @@ public class Editor extends Canvas implements ActionListener
           }
           else
           {
-               g.drawImage(buffImage, 0, 0, this);
+               offscreen = buffImage.getGraphics();
+               offscreen.setColor(Color.BLACK);
+               offscreen.fillRect(0, 0, this.getSize().width, this.getSize().height);
+               
+               for(GlyphColumn a : grid)
+               {
+                    a.preRender();
+                    a.render(offscreen);
+               }
+               
+               offscreen.dispose();
+               
+               g.drawImage(buffImage, 0, 0, Color.BLACK, this);
           }
-     }
-
-     /*
-      * Intructions for repaint after paint
-      * */
-     @Override
-     public void update(Graphics g)
-     {
-          offscreen = buffImage.getGraphics();
-          offscreen.setColor(Color.BLACK);
-          offscreen.fillRect(0, 0, 3 * Window.WIDTH, 2 * Window.HEIGHT / 3);
-          
-          for(GlyphColumn a : grid)
-          {
-               a.preRender();
-               a.render(offscreen);
-          }
-          
-          offscreen.dispose();
-          
-          g.drawImage(buffImage, 0, 0, Color.BLACK, this);
      }
      
      /*
@@ -347,10 +338,10 @@ public class Editor extends Canvas implements ActionListener
            * */
           try
           {
-               buffImage = new BufferedImage(3 * Window.WIDTH, 2 * Window.HEIGHT / 3, BufferedImage.TYPE_INT_ARGB);
+               buffImage = this.createImage(this.getSize().width, this.getSize().height);
                offscreen = buffImage.getGraphics();
                offscreen.setColor(Color.BLACK);
-               offscreen.fillRect(0, 0, 3 * Window.WIDTH, 2 * Window.HEIGHT / 3);
+               offscreen.fillRect(0, 0, this.getSize().width, this.getSize().height);
                
                for(GlyphColumn a : grid)
                {

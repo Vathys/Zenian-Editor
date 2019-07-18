@@ -8,7 +8,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 
 public class Window extends JFrame
 {
@@ -24,16 +23,18 @@ public class Window extends JFrame
      {
           setTitle("Zenian Text Editor");
           setPreferredSize(new Dimension(WIDTH, HEIGHT));
-          setMaximumSize(new Dimension(WIDTH, HEIGHT));
           setMinimumSize(new Dimension(WIDTH, HEIGHT));
-                          
+          setMaximumSize(new Dimension(WIDTH, HEIGHT));
+          
+          System.out.println("(" + WIDTH + ", " + HEIGHT + ")");
+          
           getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
      
           /*
            * The Canvas needs a preferred size to work with the Scroll Pane
            * */
           e = new Editor();
-          e.setPreferredSize(new Dimension(4 * WIDTH, 2 * HEIGHT / 3));
+          e.setPreferredSize(new Dimension(3 * WIDTH, HEIGHT));
              
           /*
            * The JPanel is just a container to hold the Canvas/Editor
@@ -49,9 +50,8 @@ public class Window extends JFrame
            * the ones in the original screen.
            * */
           JScrollPane sp = new JScrollPane(jp);
-          sp.setPreferredSize(new Dimension(5 * WIDTH, 2 * HEIGHT / 3));
+          sp.setPreferredSize(new Dimension(WIDTH, 2 * HEIGHT / 3));
           sp.setFocusable(false);
-          sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
           getContentPane().add(sp);
           
           getContentPane().add(e.prepareButtonPanel());
