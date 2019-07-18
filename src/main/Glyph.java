@@ -15,6 +15,8 @@ public class Glyph
      private GlyphColumn gc;
      private Color fontColor;
      
+     private int[] offset;
+     
      public Glyph (GlyphColumn gc)
      {
           this.x = gc.getStartX();
@@ -28,24 +30,29 @@ public class Glyph
           c = new ArrayList<ZenianLetter>();
      }
 
-     public void render(Graphics g)
+     public void preRender()
      {
-          Graphics2D gi = (Graphics2D) g;
-          int[] offset = new int[] {x + (gc.cellWidth / 2), y + startOffset[1], startOffset[0], startOffset[1]};
-          
+          offset = new int[] {x + (gc.cellWidth / 2), y + startOffset[1], startOffset[0], startOffset[1]};
+
           int widthTracker = startOffset[0] * 2;
           
-          LetterRenderHandler rh = new LetterRenderHandler(fontColor);
           for(int i = 0; i < c.size(); i++)
           {
                widthTracker += c.get(i).getLetterOffset()[0] * 2;
                if(widthTracker > gc.cellWidth)
                {
                     offset[0] += c.get(i).getLetterOffset()[0];
-                    gc.cellWidth = widthTracker;
+                    gc.cellWidth += c.get(i).getLetterOffset()[0] * 2;
                }
                offset[1] += c.get(i).getLetterOffset()[1];
           }
+     }
+     
+     public void render(Graphics g)
+     {
+          Graphics2D gi = (Graphics2D) g;
+          
+          LetterRenderHandler rh = new LetterRenderHandler(fontColor);
           //drawDebug(gi, offset);
           for(int i = 0; i < c.size(); i++) {
                //eraseDebug(gi, offset);

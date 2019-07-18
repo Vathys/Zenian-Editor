@@ -8,6 +8,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 public class Window extends JFrame
 {
@@ -50,6 +51,7 @@ public class Window extends JFrame
           JScrollPane sp = new JScrollPane(jp);
           sp.setPreferredSize(new Dimension(5 * WIDTH, 2 * HEIGHT / 3));
           sp.setFocusable(false);
+          sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
           getContentPane().add(sp);
           
           getContentPane().add(e.prepareButtonPanel());

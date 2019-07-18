@@ -36,13 +36,21 @@ public class GlyphColumn
           this.currentHeight = getTotalHeight();
      }
 
+     public void preRender()
+     {
+          for(int i = column.size() - 1; i >= 0; i--)
+          {
+               column.get(i).preRender();
+          }
+     }
+     
      public void render(Graphics g)
      {
           for(Glyph gl : column)
           {
                gl.render(g);
           }
-          //drawDebug(g);
+          drawDebug(g);
      }
      
      @SuppressWarnings("unused")
