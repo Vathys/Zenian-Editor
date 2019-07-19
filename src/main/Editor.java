@@ -17,18 +17,11 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 public class Editor extends JPanel implements ActionListener
 {
      private static final long serialVersionUID = 1L;
-     
-     /* Old Variables
-     private Thread thread;
-     private boolean running = false;
-     public static int FPStrace = 1;
-     */
      
      private Window container;
      
@@ -44,11 +37,6 @@ public class Editor extends JPanel implements ActionListener
      private static boolean runover;
      private static boolean newColumn;
      private static boolean backspace;
-     
-     /*
-      * I used this tutorial for a "Scrollable Canvas"
-      * https://www.rgagnon.com/javadetails/java-0230.html
-      * */
      
      public Editor(Window container)
      {

@@ -2,44 +2,38 @@ package main;
 
 enum ZenianLetter
 {
-     NULL("\u0000", Symmetry.NULL),
-     I("\u0069", Symmetry.HORIZONTAL),
-     Y("\u0079", Symmetry.HORIZONTAL),
-     E("\u0065", Symmetry.HORIZONTAL),
-     O_WITH_STROKE("\u00f8", Symmetry.HORIZONTAL),
-     OPEN_E("\u025b", Symmetry.HORIZONTAL),
-     LIGATURE_OE("\u0153", Symmetry.HORIZONTAL),
-     A("\u0061", Symmetry.VERTICAL),
-     LIGATURE_CAPITAL_OE("\u0276", Symmetry.VERTICAL),
-     T("\u0074", Symmetry.HORIZONTAL),
-     D("\u0064", Symmetry.HORIZONTAL),
-     T_WITH_RETROFLEX_HOOK("\u0288", Symmetry.HORIZONTAL),
-     D_WITH_TAIL("\u0256", Symmetry.HORIZONTAL),
-     THETA("\u03b8", Symmetry.VERTICAL),
-     ETH("\u00f0", Symmetry.VERTICAL),
-     S("\u0073", Symmetry.HORIZONTAL),
-     Z("\u007a", Symmetry.HORIZONTAL),
-     ESH("\u0283", Symmetry.HORIZONTAL),
-     EZH("\u0292", Symmetry.HORIZONTAL),
-     S_WITH_HOOK("\u0282", Symmetry.HORIZONTAL),
-     Z_WITH_RETROFLEX_HOOK("\u0290", Symmetry.HORIZONTAL),
-     V_WITH_HOOK("\u028b", Symmetry.HORIZONTAL),
-     J("\u006a", Symmetry.HORIZONTAL);
+     NULL("\u0000"),
+     I("\u0069"),
+     Y("\u0079"),
+     E("\u0065"),
+     O_WITH_STROKE("\u00f8"),
+     OPEN_E("\u025b"),
+     LIGATURE_OE("\u0153"),
+     A("\u0061"),
+     LIGATURE_CAPITAL_OE("\u0276"),
+     T("\u0074"),
+     D("\u0064"),
+     T_WITH_RETROFLEX_HOOK("\u0288"),
+     D_WITH_TAIL("\u0256"),
+     THETA("\u03b8"),
+     ETH("\u00f0"),
+     S("\u0073"),
+     Z("\u007a"),
+     ESH("\u0283"),
+     EZH("\u0292"),
+     S_WITH_HOOK("\u0282"),
+     Z_WITH_RETROFLEX_HOOK("\u0290"),
+     V_WITH_HOOK("\u028b"),
+     J("\u006a");
      
      private String key;
-     private Symmetry sym;
      
-     private ZenianLetter(String key, Symmetry sym) {
+     private ZenianLetter(String key) {
          this.key = key;
-         this.sym = sym;
      }
      
      public String getCharacter() {
           return this.key;
-     }
-     
-     public Symmetry getSymmetry() {
-          return this.sym;
      }
      
      public int[] getLetterOffset(int fontSize)
