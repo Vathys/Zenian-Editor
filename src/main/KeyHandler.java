@@ -32,15 +32,15 @@ public class KeyHandler implements KeyListener
           }
           if(e.getKeyCode() == KeyEvent.VK_SPACE)
           {
-               Editor.toggleValue("newGlyph");
+               Editor.toggleElement("newGlyph", true);
           }
           if(e.getKeyCode() == KeyEvent.VK_ENTER)
           {
-               Editor.toggleValue("newColumn");
+               Editor.toggleElement("newColumn", true);
           }
           if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
           {
-               Editor.toggleValue("backSpace");
+               Editor.toggleElement("backspace", true);
           }
           
           edit.tick();

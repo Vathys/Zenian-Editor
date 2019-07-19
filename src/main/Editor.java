@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 public class Editor extends JPanel implements ActionListener
@@ -27,6 +30,8 @@ public class Editor extends JPanel implements ActionListener
      public static int FPStrace = 1;
      */
      
+     private Window container;
+     
      private ArrayList<GlyphColumn> grid;
      private int currentColumn;
      private int fontSize;
@@ -38,16 +43,18 @@ public class Editor extends JPanel implements ActionListener
      private static boolean newGlyph;
      private static boolean runover;
      private static boolean newColumn;
-     private static boolean backSpace;
+     private static boolean backspace;
      
      /*
       * I used this tutorial for a "Scrollable Canvas"
       * https://www.rgagnon.com/javadetails/java-0230.html
       * */
      
-     public Editor()
+     public Editor(Window container)
      {
           super();
+          this.container = container;
+          this.setBackground(Color.BLACK);
      }
      
      /*
@@ -57,12 +64,12 @@ public class Editor extends JPanel implements ActionListener
      {
           fontSize = 5;
           grid = new ArrayList<GlyphColumn>();
-          grid.add(new GlyphColumn(fontSize * 10, fontSize * 10, fontSize * 8, fontSize, this.getSize().height));
+          grid.add(new GlyphColumn(container, fontSize * 10, fontSize * 10, fontSize * 8, fontSize, this.getSize().height));
           currentColumn = 0;
           newGlyph = false;
           runover = false;
           newColumn = false;
-          backSpace = false;
+          backspace = false;
           
           tick();
      }
@@ -73,7 +80,7 @@ public class Editor extends JPanel implements ActionListener
      public JPanel prepareButtonPanel()
      {
           JPanel buttonPanel = new JPanel(new GridBagLayout());
-          buttonPanel.setPreferredSize(new Dimension(Window.WIDTH, Window.HEIGHT / 3));
+          buttonPanel.setPreferredSize(new Dimension(container.WIDTH, container.HEIGHT / 3));
           buttonPanel.setFocusable(false);
           GridBagConstraints g = new GridBagConstraints();
           g.fill = GridBagConstraints.BOTH;
@@ -208,37 +215,6 @@ public class Editor extends JPanel implements ActionListener
           tick();
      }
      
-     /* 
-      * Old Functions
-     public synchronized void start()
-     {
-          thread = new Thread(this);
-          thread.start();
-          running = true;
-     }
-     
-     public synchronized void stop()
-     {
-          try
-          {
-               thread.join();
-               running = false;
-          } catch(Exception e)
-          {
-               e.printStackTrace();
-          }
-     }
-     
-     public void run()
-     {
-          while(running){
-               render();
-               tick();
-           }
-           stop();
-     }
-     */
-     
      /*
       * Gets called after every change made
       * Calls repaint
@@ -257,22 +233,32 @@ public class Editor extends JPanel implements ActionListener
                {
                     newX += grid.get(i).cellWidth + fontSize * 10;
                }
-               grid.add(new GlyphColumn(newX, fontSize * 10, fontSize * 8, 5, this.getSize().height, grid.get(currentColumn).removeLastGlyph()));
+               grid.add(new GlyphColumn(container, newX, fontSize * 10, fontSize * 8, 5, this.getSize().height, grid.get(currentColumn).removeLastGlyph()));
                currentColumn += 1;
+               
                runover = false;
           }
           if(newColumn)
           {
-               int newX = 50;
+               int newX = fontSize * 10;
                for(int i = 0; i < grid.size(); i++)
                {
-                    newX += grid.get(i).cellWidth + 50;
+                    newX += grid.get(i).cellWidth + (fontSize * 10);
                }
-               grid.add(new GlyphColumn(newX, fontSize * 10, fontSize * 8, fontSize, this.getSize().height));
+               grid.add(new GlyphColumn(container, newX, fontSize * 10, fontSize * 8, fontSize, this.getSize().height));
                currentColumn += 1;
+               
+               Rectangle viewRect = container.getScrollPane().getViewport().getViewRect();
+               JScrollBar horSB = container.getScrollPane().getHorizontalScrollBar();
+               
+               if(viewRect.getX() + viewRect.getWidth() < newX)
+               {
+                    horSB.setValue(horSB.getValue() + (fontSize * 18));
+               }
+               
                newColumn = false;
           }
-          if(backSpace)
+          if(backspace)
           {
                try {
                     if(!grid.get(currentColumn).removeLastLetter())
@@ -290,9 +276,10 @@ public class Editor extends JPanel implements ActionListener
                     }
                } catch (Exception e1)
                {}
-               backSpace = false;
+               backspace = false;
                tick();
           }
+          
           
           repaint();
      }
@@ -325,17 +312,8 @@ public class Editor extends JPanel implements ActionListener
           }
      }
      
-     /*
-      * Instructions for first paint
-      * Probably not needed but keeping it because it's on the tutorial
-      * */
      public void initPaint(Graphics g)
      {
-          /*
-           * The idea is that we initialize an image.
-           * Then use a Graphics object to draw on the image offscreen
-           * And then using another Graphics object that is part of the Canvas itself we render the image...
-           * */
           try
           {
                buffImage = this.createImage(this.getSize().width, this.getSize().height);
@@ -361,55 +339,47 @@ public class Editor extends JPanel implements ActionListener
           }
      }
      
-     /*
-      * The idea right now is to implement the Buffer Image instead of the Buffer Strategy. 
-      * We'll draw the image directly onto the JPanel and tick only after an action is performed or a key is pressed
-      * 
-      * The Canvas will be updated after every tick;
-      * */
-     
-     /* 
-      * Old Function
-     private void render()
+     public static void toggleElement(String element, boolean value)
      {
-          BufferStrategy bs = this.getBufferStrategy();
-          if(bs == null){
-               this.createBufferStrategy(3);
-               return;
-          }
-          
-          Graphics g = bs.getDrawGraphics();
-          
-          g.setColor(Color.WHITE);
-          g.fillRect(0, 0, Window.WIDTH, 2 * Window.HEIGHT);
-          
-          for(GlyphColumn a : grid)
+          if(element.equals("newGlyph"))
           {
-               a.render(g);
+               newGlyph = value;
           }
-          
-          g.dispose();
-          bs.show();
+          if(element.equals("runover"))
+          {
+               runover = value;
+          }
+          if(element.equals("newColumn"))
+          {
+               newColumn = value;
+          }
+          if(element.equals("backspace"))
+          {
+               backspace = value;
+          }
      }
-     */
-     
-     public static void toggleValue(String value)
+
+     public static boolean getValue(String element)
      {
-          if(value.equals("newGlyph"))
+          if(element.equals("newGlyph"))
           {
-               newGlyph = true;
+               return newGlyph;
           }
-          if(value.equals("runover"))
+          else if(element.equals("runover"))
           {
-               runover = true;
+               return runover;
           }
-          if(value.equals("newColumn"))
+          else if(element.equals("newColumn"))
           {
-               newColumn = true;
+               return newColumn;
           }
-          if(value.equals("backSpace"))
+          else if(element.equals("backspace"))
           {
-               backSpace = true;
+               return backspace;
+          }
+          else
+          {
+               return false;
           }
      }
 }

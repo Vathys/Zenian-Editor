@@ -2,10 +2,14 @@ package main;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.ArrayList;
+
+import javax.swing.JScrollBar;
 
 public class GlyphColumn
 {
+     private Window topContainer;
      private ArrayList<Glyph> column;
      private int startX;
      private int currentHeight;
@@ -13,8 +17,9 @@ public class GlyphColumn
      private int heightLimit;
      private int fontSize;
      
-     public GlyphColumn(int startX, int startY, int cellWidth, int fontSize, int maximumHeight)
+     public GlyphColumn(Window container, int startX, int startY, int cellWidth, int fontSize, int maximumHeight)
      {
+          this.topContainer = container;
           this.startX = startX;
           this.currentHeight = startY + cellWidth;
           this.cellWidth = cellWidth;
@@ -25,8 +30,9 @@ public class GlyphColumn
           column.add(new Glyph(this));
      }
      
-     public GlyphColumn(int startX, int startY, int cellWidth, int fontSize, int maximumHeight, Glyph startGlyph)
+     public GlyphColumn(Window container, int startX, int startY, int cellWidth, int fontSize, int maximumHeight, Glyph startGlyph)
      {
+          this.topContainer = container;
           this.startX = startX;
           this.currentHeight = startY + cellWidth;
           this.cellWidth = cellWidth;
@@ -38,12 +44,13 @@ public class GlyphColumn
           column.add(startGlyph);
           this.currentHeight = getTotalHeight();
      }
-
+     
+     //TODO: problems with preRendering and backspace
      public void preRender()
      {
-          for(int i = column.size() - 1; i >= 0; i--)
+          for(Glyph gl : column)
           {
-               column.get(i).preRender();
+               gl.preRender();
           }
      }
      
@@ -51,6 +58,7 @@ public class GlyphColumn
      {
           for(Glyph gl : column)
           {
+               gl.preRender();
                gl.render(g);
           }
           //drawDebug(g);
@@ -106,9 +114,16 @@ public class GlyphColumn
      
      public void checkHeight()
      {
+          Rectangle viewRect = topContainer.getScrollPane().getViewport().getViewRect();
+          JScrollBar vertSB = topContainer.getScrollPane().getVerticalScrollBar();
+          
           if(currentHeight > heightLimit)
           {
-               Editor.toggleValue("runover");
+               Editor.toggleElement("runover", true);
+          }
+          if(viewRect.getY() + viewRect.getHeight() < currentHeight)
+          {
+               vertSB.setValue(vertSB.getValue() + column.get(column.size() - 1).getHeight());
           }
      }
      

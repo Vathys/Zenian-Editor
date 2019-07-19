@@ -12,10 +12,11 @@ import javax.swing.JScrollPane;
 public class Window extends JFrame
 {
 
-     public static int WIDTH = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDefaultConfiguration().getBounds().width;
-     public static final int HEIGHT = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDefaultConfiguration().getBounds().height;
+     public final int WIDTH = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDefaultConfiguration().getBounds().width;
+     public final int HEIGHT = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDefaultConfiguration().getBounds().height;
      
      private Editor e;
+     private JScrollPane sp;
      
      private static final long serialVersionUID = 1L;
 
@@ -33,7 +34,7 @@ public class Window extends JFrame
           /*
            * The Canvas needs a preferred size to work with the Scroll Pane
            * */
-          e = new Editor();
+          e = new Editor(this);
           e.setPreferredSize(new Dimension(3 * WIDTH, HEIGHT));
              
           /*
@@ -49,7 +50,7 @@ public class Window extends JFrame
            * When we scroll right, the symbols are not rendered at all. The only rendering we see are
            * the ones in the original screen.
            * */
-          JScrollPane sp = new JScrollPane(jp);
+          sp = new JScrollPane(jp);
           sp.setPreferredSize(new Dimension(WIDTH, 2 * HEIGHT / 3));
           sp.setFocusable(false);
           getContentPane().add(sp);
@@ -70,6 +71,11 @@ public class Window extends JFrame
           e.init();
           
           this.requestFocus();
+     }
+     
+     public JScrollPane getScrollPane()
+     {
+          return sp;
      }
      
      public static void main(String[] args)

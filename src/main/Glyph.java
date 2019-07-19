@@ -45,7 +45,7 @@ public class Glyph
                if(widthTracker > gc.cellWidth)
                {
                     offset[0] += c.get(i).getLetterOffset(fontSize)[0];
-                    gc.cellWidth += c.get(i).getLetterOffset(fontSize)[0] * 2;
+                    gc.cellWidth = widthTracker;
                }
                offset[1] += c.get(i).getLetterOffset(fontSize)[1];
           }
