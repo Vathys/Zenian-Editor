@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
@@ -8,14 +9,13 @@ public class KeyHandler implements KeyListener
 {
      private Window wind;
      private Editor edit;
-     
-     KeyHandler(Window w, Editor e)
+
+     public KeyHandler(Window w, Editor e)
      {
           wind = w;
           this.edit = e;
      }
-     
-     
+
      @Override
      public void keyTyped(KeyEvent e)
      {
@@ -26,24 +26,52 @@ public class KeyHandler implements KeyListener
      @Override
      public void keyPressed(KeyEvent e)
      {
-          if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+          String testSavePathName = "res/Save Files/TestSave.txt";
+          String imTestSavePathName = "res/Save Files/ImageTestSave.png";
+          
+          if (!edit.paused && e.getKeyCode() == KeyEvent.VK_ESCAPE)
           {
                wind.dispatchEvent(new WindowEvent(wind, WindowEvent.WINDOW_CLOSING));
+
+               edit.tick();
           }
-          if(e.getKeyCode() == KeyEvent.VK_SPACE)
+          if (!edit.paused && e.getKeyCode() == KeyEvent.VK_SPACE)
           {
-               Editor.toggleElement("newGlyph", true);
+               edit.toggleElement("newGlyph", true);
+
+               edit.tick();
           }
-          if(e.getKeyCode() == KeyEvent.VK_ENTER)
+          if (!edit.paused && e.getKeyCode() == KeyEvent.VK_ENTER)
           {
-               Editor.toggleElement("newColumn", true);
+               edit.toggleElement("newColumn", true);
+
+               edit.tick();
           }
-          if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+          if (!edit.paused && e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
           {
-               Editor.toggleElement("backspace", true);
+               edit.toggleElement("backspace", true);
+
+               edit.tick();
           }
-          
-          edit.tick();
+          if (!edit.paused && e.getKeyCode() == KeyEvent.VK_S && e.isControlDown())
+          {
+               GlyphWriter.writeFile(edit, testSavePathName);
+               GlyphWriter.writeImage(edit.getGrid(), Color.WHITE, edit.getFontSize(), imTestSavePathName);
+
+               edit.tick();
+          }
+          if (!edit.paused && e.getKeyCode() == KeyEvent.VK_C && e.isControlDown())
+          {
+               edit.clear();
+          }
+          if (!edit.paused && e.getKeyCode() == KeyEvent.VK_O && e.isControlDown())
+          {
+               edit.loadSave(GlyphReader.read(testSavePathName));
+
+               edit.tick();
+          }
+
+          //edit.tick();
      }
 
      @Override
@@ -52,5 +80,4 @@ public class KeyHandler implements KeyListener
           // TODO Auto-generated method stub
 
      }
-
 }
