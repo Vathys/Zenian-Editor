@@ -1,6 +1,5 @@
 package main;
 
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
@@ -26,9 +25,6 @@ public class KeyHandler implements KeyListener
      @Override
      public void keyPressed(KeyEvent e)
      {
-          String testSavePathName = "res/Save Files/TestSave.txt";
-          String imTestSavePathName = "res/Save Files/ImageTestSave.png";
-          
           if (!edit.paused && e.getKeyCode() == KeyEvent.VK_ESCAPE)
           {
                wind.dispatchEvent(new WindowEvent(wind, WindowEvent.WINDOW_CLOSING));
@@ -53,25 +49,6 @@ public class KeyHandler implements KeyListener
 
                edit.tick();
           }
-          if (!edit.paused && e.getKeyCode() == KeyEvent.VK_S && e.isControlDown())
-          {
-               GlyphWriter.writeFile(edit, testSavePathName);
-               GlyphWriter.writeImage(edit.getGrid(), Color.WHITE, edit.getFontSize(), imTestSavePathName);
-
-               edit.tick();
-          }
-          if (!edit.paused && e.getKeyCode() == KeyEvent.VK_C && e.isControlDown())
-          {
-               edit.clear();
-          }
-          if (!edit.paused && e.getKeyCode() == KeyEvent.VK_O && e.isControlDown())
-          {
-               edit.loadSave(GlyphReader.read(testSavePathName));
-
-               edit.tick();
-          }
-
-          //edit.tick();
      }
 
      @Override

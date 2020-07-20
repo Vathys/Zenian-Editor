@@ -1,33 +1,19 @@
 package main;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import javax.swing.Box;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Editor extends JPanel implements ActionListener
 {
@@ -53,6 +39,9 @@ public class Editor extends JPanel implements ActionListener
      private boolean backspace;
      public boolean paused = false;
 
+     private JFileChooser fc = new JFileChooser();
+     private File currentOpenFile;
+
      public Editor(Window container)
      {
           super();
@@ -65,10 +54,11 @@ public class Editor extends JPanel implements ActionListener
      public void init()
      {
           initDone = false;
-          regSize = 4;
+          currentOpenFile = null;
+          regSize = 2;
           fontSize = regSize * 2;
-          fontColor = Color.BLACK;
-          backColor = Color.WHITE;
+          fontColor = Color.WHITE;
+          backColor = Color.BLACK;
           grid = new ArrayList<GlyphColumn>();
           grid.add(new GlyphColumn(this, fontSize * 10, fontSize * 10, fontSize * 8, fontSize, fontColor, container.HEIGHT));
           currentColumn = 0;
@@ -80,9 +70,10 @@ public class Editor extends JPanel implements ActionListener
           tick();
      }
 
-     public void init(int fontSize, Color fontColor, Color backColor)
+     public void init(File currentOpenFile, int fontSize, Color fontColor, Color backColor)
      {
           initDone = false;
+          this.currentOpenFile = currentOpenFile;
           regSize = fontSize / 2;
           this.fontSize = fontSize;
           this.fontColor = fontColor;
@@ -154,25 +145,110 @@ public class Editor extends JPanel implements ActionListener
                     grid.get(currentColumn).addLetterToLast(ZenianLetter.Z_WITH_RETROFLEX_HOOK);
 
                tick();
+               boolean saveas = false;
+
                if (e.getActionCommand().equals("New"))
                {
-
+                    init();
                }
                if (e.getActionCommand().equals("Open"))
                {
+                    fc = new JFileChooser();
 
+                    fc.setAcceptAllFileFilterUsed(false);
+                    fc.setFileFilter(new FileNameExtensionFilter("Aze Files", "aze"));
+
+                    int returnVal = fc.showOpenDialog(this);
+
+                    if (returnVal == JFileChooser.APPROVE_OPTION)
+                    {
+                         File file = fc.getSelectedFile();
+                         System.out.println("Opening: " + file.getName() + ".");
+
+                         EditorSave save = GlyphReader.read(file);
+
+                         if (save.valid())
+                         {
+                              loadSave(save);
+                         }
+                    } else
+                    {
+                         System.out.println("Open canceled by user");
+                    }
                }
                if (e.getActionCommand().equals("Save"))
                {
-
+                    if (currentOpenFile != null)
+                    {
+                         GlyphWriter.writeFile(this, currentOpenFile.getPath());
+                    } else
+                    {
+                         saveas = true;
+                    }
                }
-               if (e.getActionCommand().equals("Save As"))
+               if (e.getActionCommand().equals("Save As") || saveas)
                {
+                    fc = new JFileChooser();
 
+                    fc.setAcceptAllFileFilterUsed(false);
+                    fc.setFileFilter(new FileNameExtensionFilter("JPEG File", "jpg", "jpeg"));
+                    fc.setFileFilter(new FileNameExtensionFilter("PNG File", "png"));
+                    fc.setFileFilter(new FileNameExtensionFilter("Aze File", "aze"));
+
+                    int returnVal = fc.showSaveDialog(this);
+                    if (returnVal == JFileChooser.APPROVE_OPTION)
+                    {
+                         File file = fc.getSelectedFile();
+                         
+                         if (Utils.getExtension(file) == null)
+                         {
+                              String desc = fc.getFileFilter().getDescription();
+                              if (desc == "JPEG File")
+                              {
+                                   file = new File(file.getAbsolutePath() + ".jpg");
+                              } else if (desc == "PNG File")
+                              {
+                                   file = new File(file.getAbsolutePath() + ".png");
+                              } else if (desc == "Aze File")
+                              {
+                                   file = new File(file.getAbsolutePath() + ".aze");
+                              }
+                         }
+                         else
+                         {
+                              String ext = Utils.getExtension(file);
+                              if(!ext.equals("jpg") || !ext.equals("jpeg") || !ext.equals("png") || !ext.equals("aze"))
+                              {
+                                   String desc = fc.getFileFilter().getDescription();
+                                   System.out.println(desc);
+                                   if (desc == "JPEG File")
+                                   {
+                                        file = new File(file.getAbsolutePath() + ".jpg");
+                                   } else if (desc == "PNG File")
+                                   {
+                                        file = new File(file.getAbsolutePath() + ".png");
+                                   } else if (desc == "Aze File")
+                                   {
+                                        file = new File(file.getAbsolutePath() + ".aze");
+                                   }
+                              }
+                         }
+
+                         String ext = Utils.getExtension(file);
+                         
+                         if (ext.equals("jpg") || ext.equals("jpeg") || ext.equals("png"))
+                         {
+                              GlyphWriter.writeImage(this, file);
+                         } else if (ext.equals("aze"))
+                         {
+                              GlyphWriter.writeFile(this, file);
+                         }
+                    }
+                    saveas = false;
                }
                if (e.getActionCommand().equals("Close"))
                {
-
+                    container.dispose();
                }
                if (e.getActionCommand().equals("fontSize"))
                {
@@ -180,6 +256,7 @@ public class Editor extends JPanel implements ActionListener
                     fontSize = fontSizeArr.get(source.getSelectedIndex());
                }
           }
+          tick();
      }
 
      /*
@@ -223,7 +300,7 @@ public class Editor extends JPanel implements ActionListener
                {
                     horSB.setValue(horSB.getValue() + (fontSize * 18));
                }
-               
+
                newColumn = false;
           }
           if (backspace)
@@ -249,7 +326,7 @@ public class Editor extends JPanel implements ActionListener
                backspace = false;
                tick();
           }
-          
+
           this.repaint();
      }
 
@@ -280,7 +357,7 @@ public class Editor extends JPanel implements ActionListener
                g.drawImage(buffImage, 0, 0, backColor, this);
           }
      }
-     
+
      public void initPaint(Graphics g)
      {
           try
@@ -318,7 +395,7 @@ public class Editor extends JPanel implements ActionListener
 
           paused = true;
 
-          init(save.getFontSize(), save.getFontColor(), save.getBackColor());
+          init(save.getFile(), save.getFontSize(), save.getFontColor(), save.getBackColor());
 
           for (int i = 0; i < save.getGrid().size(); i++)
           {
@@ -328,8 +405,9 @@ public class Editor extends JPanel implements ActionListener
                     {
                          grid.get(currentColumn).addLetterToLast(save.getGrid().get(i).get(j)[k]);
                          grid.get(currentColumn).preRender();
+                         tick();
                     }
-                    if (j != save.getGrid().get(i).size() - 1 || i == save.getGrid().size() - 1)
+                    if (j != save.getGrid().get(i).size() - 1)
                     {
                          toggleElement("newGlyph", true);
                          tick();
@@ -343,6 +421,7 @@ public class Editor extends JPanel implements ActionListener
           }
 
           paused = false;
+
      }
 
      public Window getWindow()

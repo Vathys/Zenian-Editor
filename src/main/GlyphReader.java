@@ -2,8 +2,6 @@ package main;
 
 import java.awt.Color;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,7 +9,11 @@ public class GlyphReader
 {
      public static EditorSave read(String pathname)
      {
-          File saveFile = new File(pathname);
+          return read(new File(pathname));
+     }
+
+     public static EditorSave read(File saveFile)
+     {
           Scanner reader;
           EditorSave save = new EditorSave();
           ArrayList<ZenianLetter[]> column = new ArrayList<ZenianLetter[]>();
@@ -23,6 +25,10 @@ public class GlyphReader
           try
           {
                reader = new Scanner(saveFile);
+               if(reader.hasNextLine())
+               {
+                    save.setFile(saveFile);
+               }
                while (reader.hasNextLine())
                {
                     tracker++;
@@ -97,9 +103,11 @@ public class GlyphReader
 
                     runthrough = true;
                }
-          } catch (FileNotFoundException e)
+          } 
+          catch (Exception e)
           {
                e.printStackTrace();
+               save.invalidate();
           }
           
           return save;

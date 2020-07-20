@@ -2,7 +2,6 @@ package main;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,7 +15,16 @@ public class GlyphWriter
 {
      public static File writeFile(Editor edit, String pathname)
      {
-          File saveFile = new File(pathname);
+          return writeFile(edit, new File(pathname));
+     }
+     
+     public static File writeImage(Editor edit, String pathname)
+     {
+          return writeImage(edit, new File(pathname));
+     }
+     
+     public static File writeFile(Editor edit, File saveFile)
+     {
           ArrayList<GlyphColumn> doc = edit.getGrid();
           if (!saveFile.isFile())
           {
@@ -65,27 +73,27 @@ public class GlyphWriter
           return saveFile;
      }
 
-     public static File writeImage(ArrayList<GlyphColumn> doc, Color backColor, int fontSize, String pathname)
+     public static File writeImage(Editor edit, File file)
      {
-          int width = fontSize * 10;
+          int width = edit.getFontSize() * 10;
           int height = 0;
 
-          for (GlyphColumn a : doc)
+          for (GlyphColumn a : edit.getGrid())
           {
-               width += a.cellWidth + fontSize * 10;
+               width += a.cellWidth + edit.getFontSize() * 10;
                if (a.getTotalHeight() > height)
                {
                     height = a.getTotalHeight();
                }
           }
-          height += fontSize * 8;
+          height += edit.getFontSize() * 8;
 
-          BufferedImage buffImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+          BufferedImage buffImage = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
           Graphics offscreen = buffImage.getGraphics();
-          offscreen.setColor(backColor);
+          offscreen.setColor(edit.getBackColor());
           offscreen.fillRect(0, 0, width, height);
 
-          for (GlyphColumn a : doc)
+          for (GlyphColumn a : edit.getGrid())
           {
                a.preRender();
                a.render(offscreen);
@@ -93,7 +101,6 @@ public class GlyphWriter
 
           offscreen.dispose();
 
-          File file = new File(pathname);
           if (!file.isFile())
           {
                try
@@ -106,7 +113,7 @@ public class GlyphWriter
           }
           try
           {
-               ImageIO.write(buffImage, "png", file);
+               ImageIO.write(buffImage, Utils.getExtension(file), file);
           } catch (Exception e)
           {
                e.printStackTrace();

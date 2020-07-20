@@ -1,10 +1,13 @@
 package main;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 
 public class EditorSave
 {
+     private boolean valid = true;
+     private File file;
      private int fontSize;
      private Color fontColor;
      private Color backColor;
@@ -63,6 +66,18 @@ public class EditorSave
           this.backColor = backColor;
      }
      
+     public File getFile()
+     {
+          return file;
+     }
+     
+
+     public void setFile(File file)
+     {
+          this.file = file;
+     }
+     
+
      /**
       * @return the grid
       */
@@ -100,5 +115,15 @@ public class EditorSave
                System.out.print(", " + glyph[i]);
           }
           System.out.println("]");
+     }
+
+     public boolean valid()
+     {
+          return valid;
+     }
+     
+     public void invalidate()
+     {
+          valid = false;
      }
 }
