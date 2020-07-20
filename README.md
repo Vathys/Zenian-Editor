@@ -3,9 +3,9 @@
 ## Task List
 
 - [x] Write file reader code 
-- [ ] Implement Common Menu Button Functions
-  - [ ] Properly put write code in file menu button action
-  - [ ] Properly put read code in file menu button action
+- [x] Implement Common Menu Button Functions
+  - [x] Properly put write code in file menu button action
+  - [x] Properly put read code in file menu button action
 - [ ] Add some kind of box around current glyphs
 - [ ] Allow either symmetrical or non-symmetrical mode
 - [ ] Add Tabbed Panes
