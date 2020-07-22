@@ -137,8 +137,8 @@ public class GlyphColumn implements Cloneable
 
      public void checkHeight()
      {
-          Rectangle viewRect = editor.getWindow().getScrollPane().getViewport().getViewRect();
-          JScrollBar vertSB = editor.getWindow().getScrollPane().getVerticalScrollBar();
+          Rectangle viewRect = editor.getScrollPane().getViewport().getViewRect();
+          JScrollBar vertSB = editor.getScrollPane().getVerticalScrollBar();
 
           if (currentHeight > heightLimit)
           {

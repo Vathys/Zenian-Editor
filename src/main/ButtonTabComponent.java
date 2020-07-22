@@ -23,6 +23,8 @@ import javax.swing.plaf.basic.BasicButtonUI;
 
 public class ButtonTabComponent extends JPanel
 {
+     private static final long serialVersionUID = 1L;
+
      private final static MouseListener buttonMouseListener = new MouseAdapter()
      {
           public void mouseEntered(MouseEvent e)
@@ -48,8 +50,11 @@ public class ButtonTabComponent extends JPanel
 
      private class TabButton extends JButton implements ActionListener
      {
+          private static final long serialVersionUID = 1L;
+
           public TabButton()
           {
+               super("Remove Tab");
                int size = 17;
                setPreferredSize(new Dimension(size, size));
                setToolTipText("close tab");
@@ -67,25 +72,27 @@ public class ButtonTabComponent extends JPanel
           public void actionPerformed(ActionEvent e)
           {
                int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-               if(i != 1)
+               if (i != -1 && pane.getTabCount() > 1)
                {
                     pane.remove(i);
                }
           }
 
-          public void updateUI() {}
-          
+          public void updateUI()
+          {
+          }
+
           protected void paintComponent(Graphics g)
           {
                super.paintComponent(g);
                Graphics2D g2 = (Graphics2D) g.create();
-               if(getModel().isPressed())
+               if (getModel().isPressed())
                {
                     g2.translate(1, 1);
                }
                g2.setStroke(new BasicStroke(2));
                g2.setColor(Color.BLACK);
-               if(getModel().isRollover())
+               if (getModel().isRollover())
                {
                     g2.setColor(Color.MAGENTA);
                }

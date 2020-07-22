@@ -1,4 +1,4 @@
-package main;
+package utils;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+
+import main.Editor;
+import main.GlyphColumn;
 
 public class GlyphWriter
 {
@@ -23,7 +26,7 @@ public class GlyphWriter
           return writeImage(edit, new File(pathname));
      }
      
-     public static File writeFile(Editor edit, File saveFile)
+     public static File writeCustomFile(Editor edit, int fontSize, Color fontColor, Color backColor, File saveFile)
      {
           ArrayList<GlyphColumn> doc = edit.getGrid();
           if (!saveFile.isFile())
@@ -42,11 +45,11 @@ public class GlyphWriter
                {
                     BufferedWriter bw = new BufferedWriter(new FileWriter(saveFile));
 
-                    bw.write("fontSize: " + edit.getFontSize() + ";");
+                    bw.write("fontSize: " + fontSize + ";");
                     bw.newLine();
-                    bw.write("fontColor: " + writeColor(edit.getFontColor()) + ";");
+                    bw.write("fontColor: " + writeColor(fontColor) + ";");
                     bw.newLine();
-                    bw.write("backColor: " + writeColor(edit.getBackColor()) + ";");
+                    bw.write("backColor: " + writeColor(backColor) + ";");
                     bw.newLine();
                     
                     for (int i = 0; i < doc.size(); i++)
@@ -71,6 +74,11 @@ public class GlyphWriter
           }
 
           return saveFile;
+     }
+     
+     public static File writeFile(Editor edit, File saveFile)
+     {
+          return writeCustomFile(edit, edit.getFontSize(), edit.getFontColor(), edit.getBackColor(), saveFile);
      }
 
      public static File writeImage(Editor edit, File file)

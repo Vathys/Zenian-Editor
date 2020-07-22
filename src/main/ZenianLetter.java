@@ -1,6 +1,6 @@
 package main;
 
-enum ZenianLetter
+public enum ZenianLetter
 {
           NULL("\u0000"), 
           I("\u0069"), 

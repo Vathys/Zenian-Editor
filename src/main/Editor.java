@@ -4,30 +4,24 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JScrollPane;
 
-public class Editor extends JPanel implements ActionListener
+public class Editor extends JPanel
 {
      private static final long serialVersionUID = 1L;
 
      private Window container;
+     private JScrollPane scrollPane;
 
      private ArrayList<GlyphColumn> grid;
      private int currentColumn;
      private int regSize;
      private int fontSize;
-     private ArrayList<Integer> fontSizeArr;
      private Color fontColor;
      private Color backColor;
 
@@ -41,8 +35,7 @@ public class Editor extends JPanel implements ActionListener
      private boolean backspace;
      public boolean paused = false;
 
-     private JFileChooser fc = new JFileChooser();
-     private File currentOpenFile;
+     private File editorFile;
 
      public Editor(Window container)
      {
@@ -56,7 +49,7 @@ public class Editor extends JPanel implements ActionListener
      public void init()
      {
           initDone = false;
-          currentOpenFile = null;
+          editorFile = null;
           regSize = 2;
           fontSize = regSize * 2;
           fontColor = Color.WHITE;
@@ -72,10 +65,10 @@ public class Editor extends JPanel implements ActionListener
           tick();
      }
 
-     public void init(File currentOpenFile, int fontSize, Color fontColor, Color backColor)
+     public void init(File editorFile, int fontSize, Color fontColor, Color backColor)
      {
           initDone = false;
-          this.currentOpenFile = currentOpenFile;
+          this.editorFile = editorFile;
           regSize = fontSize / 2;
           this.fontSize = fontSize;
           this.fontColor = fontColor;
@@ -88,195 +81,6 @@ public class Editor extends JPanel implements ActionListener
           newColumn = false;
           backspace = false;
 
-          tick();
-     }
-
-     /*
-      * Handles button presses and adds letters accordingly
-      * */
-     @SuppressWarnings("unchecked")
-     @Override
-     public void actionPerformed(ActionEvent e)
-     {
-          if (!paused)
-          {
-               if (ZenianLetter.I.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.I);
-               if (ZenianLetter.Y.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.Y);
-               if (ZenianLetter.E.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.E);
-               if (ZenianLetter.O_WITH_STROKE.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.O_WITH_STROKE);
-               if (ZenianLetter.OPEN_E.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.OPEN_E);
-               if (ZenianLetter.LIGATURE_OE.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.LIGATURE_OE);
-               if (ZenianLetter.A.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.A);
-               if (ZenianLetter.LIGATURE_CAPITAL_OE.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.LIGATURE_CAPITAL_OE);
-               if (ZenianLetter.T.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.T);
-               if (ZenianLetter.D.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.D);
-               if (ZenianLetter.T_WITH_RETROFLEX_HOOK.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.T_WITH_RETROFLEX_HOOK);
-               if (ZenianLetter.D_WITH_TAIL.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.D_WITH_TAIL);
-               if (ZenianLetter.V_WITH_HOOK.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.V_WITH_HOOK);
-               if (ZenianLetter.J.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.J);
-               if (ZenianLetter.TURNED_R.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.TURNED_R);
-               if (ZenianLetter.THETA.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.THETA);
-               if (ZenianLetter.ETH.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.ETH);
-               if (ZenianLetter.S.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.S);
-               if (ZenianLetter.Z.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.Z);
-               if (ZenianLetter.ESH.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.ESH);
-               if (ZenianLetter.EZH.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.EZH);
-               if (ZenianLetter.S_WITH_HOOK.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.S_WITH_HOOK);
-               if (ZenianLetter.Z_WITH_RETROFLEX_HOOK.getCharacter().equals(e.getActionCommand()))
-                    grid.get(currentColumn).addLetterToLast(ZenianLetter.Z_WITH_RETROFLEX_HOOK);
-
-               tick();
-               boolean saveas = false;
-
-               if (e.getActionCommand().equals("New"))
-               {
-                    init();
-               }
-               if (e.getActionCommand().equals("Open"))
-               {
-                    fc = new JFileChooser();
-
-                    fc.setAcceptAllFileFilterUsed(false);
-                    fc.setFileFilter(new FileNameExtensionFilter("Aze Files", "aze"));
-
-                    int returnVal = fc.showOpenDialog(this);
-
-                    if (returnVal == JFileChooser.APPROVE_OPTION)
-                    {
-                         File file = fc.getSelectedFile();
-                         System.out.println("Opening: " + file.getName() + ".");
-
-                         EditorSave save = GlyphReader.read(file);
-
-                         if (save.valid())
-                         {
-                              loadSave(save);
-                         }
-                    } else
-                    {
-                         System.out.println("Open canceled by user");
-                    }
-               }
-               if (e.getActionCommand().equals("Save"))
-               {
-                    if (currentOpenFile != null)
-                    {
-                         GlyphWriter.writeFile(this, currentOpenFile);
-                    } else
-                    {
-                         saveas = true;
-                    }
-               }
-               if (e.getActionCommand().equals("Save As") || saveas)
-               {
-                    fc = new JFileChooser();
-
-                    fc.setAcceptAllFileFilterUsed(false);
-                    fc.setFileFilter(new FileNameExtensionFilter("JPEG File", "jpg", "jpeg"));
-                    fc.setFileFilter(new FileNameExtensionFilter("PNG File", "png"));
-                    fc.setFileFilter(new FileNameExtensionFilter("Aze File", "aze"));
-
-                    int returnVal = fc.showSaveDialog(this);
-                    if (returnVal == JFileChooser.APPROVE_OPTION)
-                    {
-                         File file = fc.getSelectedFile();
-                         
-                         if (Utils.getExtension(file) == null)
-                         {
-                              String desc = fc.getFileFilter().getDescription();
-                              if (desc == "JPEG File")
-                              {
-                                   file = new File(file.getAbsolutePath() + ".jpg");
-                              } else if (desc == "PNG File")
-                              {
-                                   file = new File(file.getAbsolutePath() + ".png");
-                              } else if (desc == "Aze File")
-                              {
-                                   file = new File(file.getAbsolutePath() + ".aze");
-                              }
-                         }
-                         else
-                         {
-                              String ext = Utils.getExtension(file);
-                              if(!ext.equals("jpg") || !ext.equals("jpeg") || !ext.equals("png") || !ext.equals("aze"))
-                              {
-                                   String desc = fc.getFileFilter().getDescription();
-                                   System.out.println(desc);
-                                   if (desc == "JPEG File")
-                                   {
-                                        file = new File(file.getAbsolutePath() + ".jpg");
-                                   } else if (desc == "PNG File")
-                                   {
-                                        file = new File(file.getAbsolutePath() + ".png");
-                                   } else if (desc == "Aze File")
-                                   {
-                                        file = new File(file.getAbsolutePath() + ".aze");
-                                   }
-                              }
-                         }
-
-                         String ext = Utils.getExtension(file);
-                         
-                         if (ext.equals("jpg") || ext.equals("jpeg") || ext.equals("png"))
-                         {
-                              GlyphWriter.writeImage(this, file);
-                         } else if (ext.equals("aze"))
-                         {
-                              GlyphWriter.writeFile(this, file);
-                         }
-                    }
-                    saveas = false;
-               }
-               if (e.getActionCommand().equals("Exit"))
-               {
-                    container.dispatchEvent(new WindowEvent(container, WindowEvent.WINDOW_CLOSING));
-               }
-               if (e.getActionCommand().equals("fontSize"))
-               {
-                    JComboBox<Integer> source = (JComboBox<Integer>) e.getSource();
-                    
-                    try
-                    {
-                         regSize = (int) source.getSelectedItem();
-                         fontSize = regSize * 2;
-                         
-                         File temp = File.createTempFile("temp", null);
-                         GlyphWriter.writeFile(this, temp);
-                         
-                         EditorSave save = GlyphReader.read(temp);
-                         loadSave(save);
-                         
-                         temp.delete();
-                    } catch (IOException e1)
-                    {
-                         e1.printStackTrace();
-                    }
-                    
-                    container.requestFocus();
-               }
-          }
           tick();
      }
 
@@ -314,8 +118,8 @@ public class Editor extends JPanel implements ActionListener
                grid.add(new GlyphColumn(this, newX, fontSize * 10, fontSize * 8, fontSize, fontColor, container.HEIGHT));
                currentColumn += 1;
 
-               Rectangle viewRect = container.getScrollPane().getViewport().getViewRect();
-               JScrollBar horSB = container.getScrollPane().getHorizontalScrollBar();
+               Rectangle viewRect = scrollPane.getViewport().getViewRect();
+               JScrollBar horSB = scrollPane.getHorizontalScrollBar();
 
                if (viewRect.getX() + viewRect.getWidth() < newX)
                {
@@ -455,6 +259,11 @@ public class Editor extends JPanel implements ActionListener
           return grid;
      }
 
+     public void addLetterToLast(ZenianLetter letter)
+     {
+          grid.get(currentColumn).addLetterToLast(letter);
+     }
+
      public int getFontSize()
      {
           return fontSize;
@@ -470,6 +279,16 @@ public class Editor extends JPanel implements ActionListener
           return backColor;
      }
 
+     public File getEditorFile()
+     {
+          return editorFile;
+     }
+
+     public void setEditorFile(File file)
+     {
+          editorFile = file;
+     }
+     
      public void toggleElement(String element, boolean value)
      {
           if (element.equals("newGlyph"))
@@ -508,5 +327,15 @@ public class Editor extends JPanel implements ActionListener
           {
                return false;
           }
+     }
+
+     public void setScrollPane(JScrollPane scpane)
+     {
+          scrollPane = scpane;
+     }
+
+     public JScrollPane getScrollPane()
+     {
+          return scrollPane;
      }
 }

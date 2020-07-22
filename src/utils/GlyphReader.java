@@ -1,9 +1,12 @@
-package main;
+package utils;
 
 import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import main.EditorSave;
+import main.ZenianLetter;
 
 public class GlyphReader
 {
