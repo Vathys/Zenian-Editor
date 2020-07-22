@@ -25,12 +25,6 @@ public class KeyHandler implements KeyListener
      @Override
      public void keyPressed(KeyEvent e)
      {
-          if (!edit.paused && e.getKeyCode() == KeyEvent.VK_ESCAPE)
-          {
-               wind.dispatchEvent(new WindowEvent(wind, WindowEvent.WINDOW_CLOSING));
-
-               edit.tick();
-          }
           if (!edit.paused && e.getKeyCode() == KeyEvent.VK_SPACE)
           {
                edit.toggleElement("newGlyph", true);

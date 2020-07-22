@@ -2,21 +2,31 @@ package main;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Event;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.InputEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+
+import com.sun.glass.events.KeyEvent;
 
 public class Window extends JFrame
 {
@@ -26,6 +36,7 @@ public class Window extends JFrame
 
      private Editor e;
      private JScrollPane sp;
+     private JTabbedPane tabPane;
 
      private static final long serialVersionUID = 1L;
 
@@ -41,24 +52,29 @@ public class Window extends JFrame
           getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
           /*
+           * The JPanel is just a container to hold the Canvas/Editor
+           * As far as I see it doesn't provide anything extra and certainly doesn't make it work
+           * */
+
+          /*
            * The Canvas needs a preferred size to work with the Scroll Pane
            * */
           e = new Editor(this);
           e.setPreferredSize(new Dimension(3 * WIDTH, HEIGHT));
-
-          this.setJMenuBar(prepareMenuBar());
-          /*
-           * The JPanel is just a container to hold the Canvas/Editor
-           * As far as I see it doesn't provide anything extra and certainly doesn't make it work
-           * */
-          JPanel jp = new JPanel(new BorderLayout());
-          jp.setFocusable(false);
-          jp.add(e);
-
-          sp = new JScrollPane(jp);
+          
+          setJMenuBar(prepareMenuBar());
+          
+          sp = new JScrollPane(e);
           sp.setPreferredSize(new Dimension(WIDTH, 2 * HEIGHT / 3));
           sp.setFocusable(false);
-          getContentPane().add(sp);
+
+          tabPane = new JTabbedPane();
+          tabPane.setFocusable(false);
+          tabPane.addTab("New File", sp);
+          if(tabPane.getTabCount() > 1)
+               tabPane.setTabComponentAt(0, new ButtonTabComponent(tabPane));
+          
+          getContentPane().add(tabPane);
 
           getContentPane().add(prepareButtonPanel());
 
@@ -67,7 +83,7 @@ public class Window extends JFrame
           setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
           setResizable(false);
           setFocusable(true);
-          setLocationRelativeTo(null);
+          setLocationByPlatform(true);
           setUndecorated(true);
 
           this.pack();
@@ -164,8 +180,24 @@ public class Window extends JFrame
           JMenuItem mi2 = new JMenuItem("Open");
           JMenuItem mi3 = new JMenuItem("Save");
           JMenuItem mi4 = new JMenuItem("Save As");
-          JMenuItem mc = new JMenuItem("Close");
+          JMenuItem mc = new JMenuItem("Exit");
 
+          mi1.setMnemonic(KeyEvent.VK_N);
+          mi1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
+          
+          mi2.setMnemonic(KeyEvent.VK_O);
+          mi2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
+          
+          mi3.setMnemonic(KeyEvent.VK_S);
+          mi3.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
+          
+          mi4.setMnemonic(KeyEvent.VK_A);
+          mi2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+          
+          mc.setMnemonic(KeyEvent.VK_E);
+          mc.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
+          
+          
           // Add action listener 
           mi1.addActionListener(e);
           mi2.addActionListener(e);
@@ -178,6 +210,9 @@ public class Window extends JFrame
           m1.add(mi4);
           m1.add(mc);
 
+          mb.add(m1);
+          
+          /*
           // Create amenu for menu 
           JMenu m2 = new JMenu("Edit");
 
@@ -195,20 +230,18 @@ public class Window extends JFrame
           m2.add(mi6);
           m2.add(mi7);
 
-          mb.add(m1);
           mb.add(m2);
-
-         /* fontSizeArr = new ArrayList<Integer>(Arrays.asList(new Integer[] { 2, 3, 4, 5, 6, 7, 8, 9, 10 }));
+          */
           
-          JComboBox<Integer> cbox = new JComboBox<Integer>((Integer[]) fontSizeArr.toArray());
+          JComboBox<Integer> cbox = new JComboBox<Integer>(new Integer[] {2, 3, 4, 5, 6, 7, 8, 9, 10});
+          cbox.setMaximumSize(new Dimension(100, 25));
           cbox.setEditable(true);
-          cbox.setSelectedIndex(fontSizeArr.indexOf(Integer.valueOf(5)));
+          cbox.setSelectedIndex(0);
           cbox.setActionCommand("fontSize");
-          cbox.addActionListener(this);
-          cbox.setRequestFocusEnabled(false);
+          cbox.addActionListener(e);
           
           mb.add(cbox);
-          */
+          
           return mb;
      }
      

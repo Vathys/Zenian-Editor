@@ -6,7 +6,9 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JComboBox;
@@ -92,6 +94,7 @@ public class Editor extends JPanel implements ActionListener
      /*
       * Handles button presses and adds letters accordingly
       * */
+     @SuppressWarnings("unchecked")
      @Override
      public void actionPerformed(ActionEvent e)
      {
@@ -180,7 +183,7 @@ public class Editor extends JPanel implements ActionListener
                {
                     if (currentOpenFile != null)
                     {
-                         GlyphWriter.writeFile(this, currentOpenFile.getPath());
+                         GlyphWriter.writeFile(this, currentOpenFile);
                     } else
                     {
                          saveas = true;
@@ -246,14 +249,32 @@ public class Editor extends JPanel implements ActionListener
                     }
                     saveas = false;
                }
-               if (e.getActionCommand().equals("Close"))
+               if (e.getActionCommand().equals("Exit"))
                {
-                    container.dispose();
+                    container.dispatchEvent(new WindowEvent(container, WindowEvent.WINDOW_CLOSING));
                }
                if (e.getActionCommand().equals("fontSize"))
                {
                     JComboBox<Integer> source = (JComboBox<Integer>) e.getSource();
-                    fontSize = fontSizeArr.get(source.getSelectedIndex());
+                    
+                    try
+                    {
+                         regSize = (int) source.getSelectedItem();
+                         fontSize = regSize * 2;
+                         
+                         File temp = File.createTempFile("temp", null);
+                         GlyphWriter.writeFile(this, temp);
+                         
+                         EditorSave save = GlyphReader.read(temp);
+                         loadSave(save);
+                         
+                         temp.delete();
+                    } catch (IOException e1)
+                    {
+                         e1.printStackTrace();
+                    }
+                    
+                    container.requestFocus();
                }
           }
           tick();
